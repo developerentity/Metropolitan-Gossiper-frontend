@@ -1,6 +1,6 @@
 import axios from "axios";
-import { setRequestError } from "redux/slices/errors";
-import { store } from "redux/store";
+import { setRequestError } from "@/redux/slices/errors";
+import { store } from "@/redux/store";
 
 // ----------------------------------------------------------------------
 

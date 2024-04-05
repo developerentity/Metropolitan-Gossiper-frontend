@@ -1,5 +1,5 @@
-import { setRequestError } from "redux/slices/errors";
-import { store } from "redux/store";
+import { setRequestError } from "@/redux/slices/errors";
+import { store } from "@/redux/store";
 import axios from "../utils/axios";
 
 export type ID = string | number;

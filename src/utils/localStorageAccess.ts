@@ -1,9 +1,9 @@
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store";
 
 export function saveToLocalStorage(state: RootState) {
   try {
-    const serialisedState = JSON.stringify(state);
-    localStorage.setItem("serialized_state", serialisedState);
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("serialized_state", serializedState);
   } catch (e) {
     console.warn(e);
   }
@@ -11,9 +11,9 @@ export function saveToLocalStorage(state: RootState) {
 
 export function loadFromLocalStorage() {
   try {
-    const serialisedState = localStorage.getItem("serialized_state");
-    if (serialisedState === null) return undefined;
-    return JSON.parse(serialisedState);
+    const serializedState = localStorage.getItem("serialized_state");
+    if (serializedState === null) return undefined;
+    return JSON.parse(serializedState);
   } catch (e) {
     console.warn(e);
     return undefined;
