@@ -24,7 +24,7 @@ export const setRequestError =
   (err: any) => (dispatch: AppDispatch, getState: () => RootState) => {
     if (err.data) {
       const message = Object.values(err.data).join("\n");
-      console.error(message);
+      console.error('error: ' + message);
       // dispatch(
       //   enqueueSnackbar({
       //     message,
@@ -33,5 +33,5 @@ export const setRequestError =
       // );
     }
     const { errors } = getState();
-    dispatch(slice.actions.setErrors([...errors.messages, err]));
+    dispatch(slice.actions.setErrors([...errors.messages, err.error]));
   };

@@ -29,7 +29,7 @@ const schema = zod.object({
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = { email: 'sofia@devias.io', password: 'Secret1' } satisfies Values;
+const defaultValues = { email: '2try@gmail.com', password: '11223344' } satisfies Values;
 
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();

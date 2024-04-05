@@ -6,31 +6,32 @@ import {
   ID,
 } from "@/requests";
 
-// COMPANY //
+const base_url = "http://localhost:5080/account/";
 
-export const getCompanyData = () => getDataByUrl("/company/");
+const signIn = async (data: { loginOrEmail: string; password: string }) =>
+  await postDataByUrl(`${base_url}auth/signin/`, data);
 
-export const getCompanyModules = () => getDataByUrl("/company/module/");
-
-export const updateCompanyData = (id: ID, data: any) =>
-  updateDataByUrl(`/company/${id}/`, data);
-
-export const updateCompanyModuleData = (id: ID, data: any) =>
-  updateDataByUrl(`/company/module/${id}/`, data);
-
-// ACCOUNT //
-
-export const signIn = (data: any) =>
-  postDataByUrl("/account/auth/login/", data);
-
-export const signUp = (data: any, invitation?: string | null) =>
+const signUp = (
+  data: {
+    // firstName: string;
+    // lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  },
+  invitation?: string | null
+) =>
   postDataByUrl(
-    "/account/auth/register/",
+    `${base_url}auth/signup/`,
     data,
     invitation ? { invitation } : {}
   );
 
-export const getAccountData = () => getDataByUrl("/account/");
+const signOut = () => deleteDataByUrl(`${base_url}/auth/signout/`);
+
+const getUser = () => getDataByUrl(base_url);
+
+// ----------------------------------------------------------------------
 
 export const updateAccountData = (id: ID, data: any) =>
   updateDataByUrl(`/account/${id}/`, data);
@@ -47,4 +48,11 @@ export const verifyPassword = (data: any) =>
 export const deleteAccount = (id: ID) => deleteDataByUrl(`/account/${id}`);
 
 export const setAccountLanguage = (language: string) =>
-  postDataByUrl("/account/setlang/", { language });
+  postDataByUrl("/account/set-lang/", { language });
+
+export default {
+  signIn,
+  signUp,
+  signOut,
+  getUser,
+};
