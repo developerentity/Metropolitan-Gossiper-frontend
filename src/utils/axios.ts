@@ -6,6 +6,7 @@ import { store } from "@/redux/store";
 
 const axiosInstance = axios.create({
   timeout: 5000,
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((request) => {

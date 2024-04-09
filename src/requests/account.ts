@@ -27,9 +27,11 @@ const signUp = (
     invitation ? { invitation } : {}
   );
 
-const signOut = () => deleteDataByUrl(`${base_url}/auth/signout/`);
+const signOut = () => deleteDataByUrl(`${base_url}auth/signout/`);
 
 const getUser = () => getDataByUrl(base_url);
+
+const refreshToken = () => postDataByUrl(`${base_url}refresh-token/`, {});
 
 // ----------------------------------------------------------------------
 
@@ -55,4 +57,5 @@ export default {
   signUp,
   signOut,
   getUser,
+  refreshToken,
 };

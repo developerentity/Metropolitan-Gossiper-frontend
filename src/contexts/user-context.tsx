@@ -19,6 +19,9 @@ export interface UserProviderProps {
   children: React.ReactNode;
 }
 
+const intervalInMinutes = 1;
+const intervalInMilliseconds = intervalInMinutes * 60 * 1000;
+
 export function UserProvider({ children }: UserProviderProps): React.JSX.Element {
   const [state, setState] = React.useState<{ user: User | null; error: string | null; isLoading: boolean }>({
     user: null,
@@ -42,6 +45,20 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
       setState((prev) => ({ ...prev, user: null, error: 'Something went wrong', isLoading: false }));
     }
   }, []);
+
+  React.useEffect(() => {
+    const intervalId = setInterval(async () => {
+      try {
+        await authClient.refreshToken()
+      } catch (err) {
+        logger.error(err);
+        setState((prev) => ({ ...prev, user: null, error: 'Something went wrong while refreshing token', isLoading: false }));
+      }
+    }, intervalInMilliseconds)
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
 
   React.useEffect(() => {
     checkSession().catch((err) => {

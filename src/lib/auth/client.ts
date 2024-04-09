@@ -2,6 +2,7 @@
 
 import account from "@/requests/account";
 import type { User } from "@/types/user";
+import { signOutFromLocalStorage } from "@/utils/localStorageAccess";
 
 export interface SignUpParams {
   firstName: string;
@@ -65,7 +66,6 @@ class AuthClient {
 
   async getUser(): Promise<{ data?: User | null; error?: string }> {
     const user = await account.getUser();
-
     const token = localStorage.getItem("access-token");
 
     if (!token) {
@@ -75,9 +75,14 @@ class AuthClient {
     return { data: user };
   }
 
+  async refreshToken(): Promise<void> {
+    const data = await account.refreshToken();
+    localStorage.setItem("access-token", data.accessToken);
+  }
+
   async signOut(): Promise<{ error?: string }> {
     await account.signOut();
-    localStorage.removeItem("access-token");
+    signOutFromLocalStorage();
 
     return {};
   }

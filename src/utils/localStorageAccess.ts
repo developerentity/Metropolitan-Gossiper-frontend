@@ -19,3 +19,11 @@ export function loadFromLocalStorage() {
     return undefined;
   }
 }
+
+export function signOutFromLocalStorage() {
+  try {
+    localStorage.removeItem("access-token");
+  } catch (e) {
+    console.warn(e);
+  }
+}
