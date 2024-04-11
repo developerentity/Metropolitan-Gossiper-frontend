@@ -27,7 +27,8 @@ export interface ResetPasswordParams {
 class AuthClient {
   async signUp(params: SignUpParams): Promise<{ error?: string }> {
     const data = await account.signUp({
-      username: params.firstName + " " + params.lastName,
+      firstName: params.firstName,
+      lastName: params.lastName,
       email: params.email,
       password: params.password,
     });
@@ -48,7 +49,7 @@ class AuthClient {
   ): Promise<{ error?: string }> {
     const { email, password } = params;
 
-    const data = await account.signIn({ loginOrEmail: email, password });
+    const data = await account.signIn({ email, password });
     const token = data.accessToken;
 
     localStorage.setItem("access-token", token);
