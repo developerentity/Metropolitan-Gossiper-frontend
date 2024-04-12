@@ -2,6 +2,24 @@ import type { NavItemConfig } from '@/types/nav';
 import { paths } from '@/paths';
 
 export const navItems = [
+    // {
+  //   key: "account",
+  //   title: "Account",
+  //   href: paths.dashboard.overview,
+  //   icon: "user",
+  // },
+  // {
+  //   key: "gossips",
+  //   title: "Gossips",
+  //   href: paths.dashboard.customers,
+  //   icon: "star-four",
+  // },
+  // {
+  //   key: "likes",
+  //   title: "Likes",
+  //   href: paths.dashboard.settings,
+  //   icon: "hand-heart",
+  // },
   { key: 'overview', title: 'Overview', href: paths.dashboard.overview, icon: 'chart-pie' },
   { key: 'customers', title: 'Customers', href: paths.dashboard.customers, icon: 'users' },
   { key: 'integrations', title: 'Integrations', href: paths.dashboard.integrations, icon: 'plugs-connected' },

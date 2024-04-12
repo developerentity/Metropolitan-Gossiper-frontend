@@ -8,8 +8,8 @@ import {
 
 const base_url = "http://localhost:5080/account/";
 
-const signIn = async (data: { email: string; password: string }) =>
-  await postDataByUrl(`${base_url}auth/signin/`, data);
+const signIn = (data: { email: string; password: string }) =>
+  postDataByUrl(`${base_url}auth/signin/`, data);
 
 const signUp = (
   data: {
