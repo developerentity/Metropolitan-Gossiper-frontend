@@ -21,6 +21,8 @@ interface GossipsInitialState {
   pageSize: number | null;
   sortField: string | null;
   sortOrder: "asc" | "desc" | null;
+  titleFilter: string | null;
+  authorId: string | null;
 }
 
 const initialState: GossipsInitialState = {
@@ -31,10 +33,12 @@ const initialState: GossipsInitialState = {
   pageSize: null,
   sortField: null,
   sortOrder: null,
+  titleFilter: null,
+  authorId: null,
 };
 
 const slice = createSlice({
-  name: "gossipsSlice",
+  name: "gossips",
   initialState,
   reducers: {
     setGossips(state, action: PayloadAction<IGossip[]>) {
@@ -58,6 +62,12 @@ const slice = createSlice({
     setSortOrder(state, action: PayloadAction<"asc" | "desc" | null>) {
       state.sortOrder = action.payload;
     },
+    setTitleFilter(state, action: PayloadAction<string>) {
+      state.titleFilter = action.payload;
+    },
+    setAuthorId(state, action: PayloadAction<string>) {
+      state.authorId = action.payload;
+    },
   },
 });
 
@@ -66,22 +76,27 @@ export default slice.reducer;
 
 // Actions
 const { setGossips, setTotalItems, setTotalPages } = slice.actions;
-export const { setPage, setPageSize, setSortOrder } = slice.actions;
+export const {
+  setPage,
+  setPageSize,
+  setSortOrder,
+  setSortField,
+  setTitleFilter,
+  setAuthorId,
+} = slice.actions;
 
-export const getGossips = async (
-  titleFilter: null | string,
-  authorId?: string
-) => {
+export const fetchGossips = async () => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { page, pageSize, sortField, sortOrder, authorId, titleFilter } =
+      getState().gossips;
     try {
-      const currentState = getState().gossips;
       const response = await gossips.getAll({
         titleFilter,
         authorId,
-        page: currentState.page,
-        pageSize: currentState.pageSize,
-        sortOrder: currentState.sortField,
-        sortField: currentState.sortOrder,
+        page,
+        pageSize,
+        sortOrder,
+        sortField,
       });
       dispatch(setGossips(response.gossips));
       dispatch(setTotalItems(response.totalItems));
