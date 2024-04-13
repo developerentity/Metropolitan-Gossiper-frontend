@@ -18,7 +18,7 @@ interface GossipsInitialState {
   totalItems: number;
   totalPages: number;
   page: number;
-  pageSize: number;
+  pageSize: number | null;
   sortField: string | null;
   sortOrder: "asc" | "desc" | null;
 }
@@ -28,7 +28,7 @@ const initialState: GossipsInitialState = {
   totalItems: 0,
   totalPages: 0,
   page: 1,
-  pageSize: 10,
+  pageSize: null,
   sortField: null,
   sortOrder: null,
 };
@@ -65,20 +65,18 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const {
-  setGossips,
-  setTotalItems,
-  setTotalPages,
-  setPage,
-  setPageSize,
-  setSortOrder,
-} = slice.actions;
+const { setGossips, setTotalItems, setTotalPages } = slice.actions;
+export const { setPage, setPageSize, setSortOrder } = slice.actions;
 
-export const getGossipsThunk = async (authorId?: string) => {
+export const getGossips = async (
+  titleFilter: null | string,
+  authorId?: string
+) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       const currentState = getState().gossips;
       const response = await gossips.getAll({
+        titleFilter,
         authorId,
         page: currentState.page,
         pageSize: currentState.pageSize,
