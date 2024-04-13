@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "@/redux/store";
 import gossips from "@/requests/gossips";
-// import { enqueueSnackbar } from './notifications';
+import { setErrors } from "./errors";
 
 interface IGossip {
+  id: string;
   title: string;
   content: string;
   author: string;
@@ -16,22 +17,20 @@ interface GossipsInitialState {
   gossips: IGossip[];
   totalItems: number;
   totalPages: number;
-  currentPage: number;
+  page: number;
   pageSize: number;
-  pageNumber: number;
-  sortField: string;
-  sortOrder: "asc" | "desc" | "";
+  sortField: string | null;
+  sortOrder: "asc" | "desc" | null;
 }
 
 const initialState: GossipsInitialState = {
   gossips: [],
   totalItems: 0,
   totalPages: 0,
-  currentPage: 0,
-  pageSize: 0,
-  pageNumber: 0,
-  sortField: "",
-  sortOrder: "",
+  page: 1,
+  pageSize: 10,
+  sortField: null,
+  sortOrder: null,
 };
 
 const slice = createSlice({
@@ -47,19 +46,16 @@ const slice = createSlice({
     setTotalPages(state, action: PayloadAction<number>) {
       state.totalPages = action.payload;
     },
-    setCurrentPage(state, action: PayloadAction<number>) {
-      state.currentPage = action.payload;
+    setPage(state, action: PayloadAction<number>) {
+      state.page = action.payload;
     },
     setPageSize(state, action: PayloadAction<number>) {
       state.pageSize = action.payload;
     },
-    setPageNumber(state, action: PayloadAction<number>) {
-      state.pageNumber = action.payload;
-    },
     setSortField(state, action: PayloadAction<string>) {
       state.sortField = action.payload;
     },
-    setSortOrder(state, action: PayloadAction<"asc" | "desc" | "">) {
+    setSortOrder(state, action: PayloadAction<"asc" | "desc" | null>) {
       state.sortOrder = action.payload;
     },
   },
@@ -68,30 +64,33 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
-// export const getGossips = () => {
-//   return async (dispatch: AppDispatch) => {
-//     try {
-//       const response = await dispatch(setPokemonList(response.data.results));
-//     } catch (error: any) {
-//       // dispatch(showSnackbar(error.message))
-//       return;
-//     }
-//   };
-// };
-
 // Actions
-// export const setRequestError =
-//   (err: any) => (dispatch: AppDispatch, getState: () => RootState) => {
-//     if (err.data) {
-//       const message = Object.values(err.data).join("\n");
-//       console.error("error: " + message);
-//       // dispatch(
-//       //   enqueueSnackbar({
-//       //     message,
-//       //     options: { variant: 'error' }
-//       //   })
-//       // );
-//     }
-//     const { errors } = getState();
-//     dispatch(slice.actions.setErrors([...errors.messages, err.error]));
-//   };
+const {
+  setGossips,
+  setTotalItems,
+  setTotalPages,
+  setPage,
+  setPageSize,
+  setSortOrder,
+} = slice.actions;
+
+export const getGossipsThunk = async (authorId?: string) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    try {
+      const currentState = getState().gossips;
+      const response = await gossips.getAll({
+        authorId,
+        page: currentState.page,
+        pageSize: currentState.pageSize,
+        sortOrder: currentState.sortField,
+        sortField: currentState.sortOrder,
+      });
+      dispatch(setGossips(response.gossips));
+      dispatch(setTotalItems(response.totalItems));
+      dispatch(setTotalPages(response.totalPages));
+    } catch (error: any) {
+      const { errors } = getState();
+      dispatch(setErrors([...errors.messages, error]));
+    }
+  };
+};

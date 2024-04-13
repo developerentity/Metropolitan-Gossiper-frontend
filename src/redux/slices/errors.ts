@@ -20,11 +20,14 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
+export const { setErrors } = slice.actions;
+
+// Actions
 export const setRequestError =
   (err: any) => (dispatch: AppDispatch, getState: () => RootState) => {
     if (err.data) {
       const message = Object.values(err.data).join("\n");
-      console.error('error: ' + message);
+      console.error("error: " + message);
       // dispatch(
       //   enqueueSnackbar({
       //     message,
