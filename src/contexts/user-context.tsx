@@ -19,7 +19,7 @@ export interface UserProviderProps {
   children: React.ReactNode;
 }
 
-const intervalInMinutes = 1;
+const intervalInMinutes = 15;
 const intervalInMilliseconds = intervalInMinutes * 60 * 1000;
 
 export function UserProvider({ children }: UserProviderProps): React.JSX.Element {

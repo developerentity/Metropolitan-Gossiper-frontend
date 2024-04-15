@@ -3,15 +3,16 @@ import { getDataByUrl } from ".";
 const base_url = "http://localhost:5080/gossips/";
 
 const getAll = (params: {
-  page: number;
-  authorId: string | null;
-  pageSize: number | null;
+  pageNumber: number;
+  authorId: string | undefined;
+  pageSize: number;
   titleFilter: string | null;
   sortField: string | null;
   sortOrder: string | null;
-}) => getDataByUrl(base_url, params);
+}) => getDataByUrl(`${base_url}get/`, params);
 
-const getOne = (gossipId: string) => getDataByUrl(base_url, { gossipId });
+const getOne = (gossipId: string) =>
+  getDataByUrl(`${base_url}/get/${gossipId}/`);
 
 export default {
   getAll,
