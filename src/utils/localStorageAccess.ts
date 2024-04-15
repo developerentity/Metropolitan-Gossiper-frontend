@@ -1,4 +1,4 @@
-import { RootState } from "@/redux/store";
+import { RootState } from "@/lib/redux/store";
 
 export function saveToLocalStorage(state: RootState) {
   try {
