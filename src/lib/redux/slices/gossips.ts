@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
+import { RootState } from "@/lib/redux/store";
 import gossips from "@/requests/gossips";
 import { ItemsListViewModel } from "@/types/response";
 
@@ -70,7 +70,7 @@ const initialState: GossipsInitialState = {
 };
 
 const slice = createSlice({
-  name: "gossips",
+  name: "gossipsSlice",
   initialState,
   reducers: {
     setPage(state, action: PayloadAction<number>) {

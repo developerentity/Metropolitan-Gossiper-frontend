@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 // import { enqueueSnackbar } from './notifications';
 
 const initialState: any = {
