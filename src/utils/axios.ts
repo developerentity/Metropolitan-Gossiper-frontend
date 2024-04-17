@@ -1,8 +1,7 @@
 "use client";
 
-import { useAppStore } from "@/lib/redux/hooks";
 import axios from "axios";
-import { setRequestError } from "@/lib/redux/slices/errors";
+import { logger } from "@/lib/default-logger";
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +21,7 @@ axiosInstance.interceptors.request.use((request) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const { dispatch } = useAppStore();
-    dispatch(setRequestError(error.response));
+    logger.error(error);
     Promise.reject(
       error?.response?.data || error?.response || "Something went wrong"
     );
