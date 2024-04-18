@@ -69,7 +69,17 @@ const integrations = [
   },
 ] satisfies Integration[];
 
-export default function Page(): React.JSX.Element {
+export default async function Page({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+
+  const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
+  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 10
+
+  // const {gossips} = await getGossips({page, limit})
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
