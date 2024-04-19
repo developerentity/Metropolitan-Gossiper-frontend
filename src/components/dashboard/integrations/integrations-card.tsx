@@ -10,17 +10,8 @@ import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
 import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import dayjs from 'dayjs';
 
-export interface Integration {
-  id: string;
-  title: string;
-  description: string;
-  logo: string;
-  installs: number;
-  updatedAt: Date;
-}
-
 export interface IntegrationCardProps {
-  integration: Integration;
+  integration: IGossip;
 }
 
 export function IntegrationCard({ integration }: IntegrationCardProps): React.JSX.Element {
@@ -29,14 +20,14 @@ export function IntegrationCard({ integration }: IntegrationCardProps): React.JS
       <CardContent sx={{ flex: '1 1 auto' }}>
         <Stack spacing={2}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Avatar src={integration.logo} variant="square" />
+            <Avatar src={integration.imageUrl} variant="square" />
           </Box>
           <Stack spacing={1}>
             <Typography align="center" variant="h5">
               {integration.title}
             </Typography>
             <Typography align="center" variant="body1">
-              {integration.description}
+              {integration.content}
             </Typography>
           </Stack>
         </Stack>
@@ -46,13 +37,13 @@ export function IntegrationCard({ integration }: IntegrationCardProps): React.JS
         <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
           <ClockIcon fontSize="var(--icon-fontSize-sm)" />
           <Typography color="text.secondary" display="inline" variant="body2">
-            Updated {dayjs(integration.updatedAt).format('MMM D, YYYY')}
+            Created {dayjs(integration.createdAt).format('MMM D, YYYY')}
           </Typography>
         </Stack>
         <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
           <DownloadIcon fontSize="var(--icon-fontSize-sm)" />
           <Typography color="text.secondary" display="inline" variant="body2">
-            {integration.installs} installs
+            {integration.likes.length} installs
           </Typography>
         </Stack>
       </Stack>

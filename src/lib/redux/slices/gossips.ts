@@ -3,16 +3,6 @@ import { RootState } from "@/lib/redux/store";
 import gossips from "@/requests/gossips";
 import { ItemsListViewModel } from "@/types/response";
 
-export interface IGossip {
-  id: string;
-  title: string;
-  content: string;
-  author: string;
-  comments: string[];
-  likes: string[];
-  imageUrl?: string;
-}
-
 interface GossipsInitialState {
   gossips: IGossip[];
   totalItems: number;
