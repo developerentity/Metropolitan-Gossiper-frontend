@@ -1,25 +1,54 @@
+"use client";
+
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import {
-  loadFromLocalStorage,
-  saveToLocalStorage,
-} from "@/utils/localStorageAccess";
 import { rootReducer } from "./rootReducer";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 // ----------------------------------------------------------------------
 
-const store = configureStore({
-  reducer: rootReducer,
-  preloadedState: loadFromLocalStorage(),
-});
+const persistConfig = {
+  key: "root",
+  storage,
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+const makeConfiguredStore = () =>
+  configureStore({
+    reducer: rootReducer,
+  });
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const makeStore = () => {
+  const isServer = typeof window === "undefined";
+  if (isServer) {
+    return makeConfiguredStore();
+  } else {
+    const persistedReducer = persistReducer(persistConfig, rootReducer);
+    let store: any = configureStore({
+      reducer: persistedReducer,
+      middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+          serializableCheck: {
+            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+          },
+        }),
+    });
+    store.__persistor = persistStore(store);
+    return store;
+  }
+};
 
-const { dispatch } = store;
+// Infer the type of makeStore
+export type AppStore = ReturnType<typeof makeStore>;
 
-export { store, dispatch };
-
-store.subscribe(() => saveToLocalStorage(store.getState()));
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];

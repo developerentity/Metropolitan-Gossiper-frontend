@@ -2,7 +2,6 @@
 
 import account from "@/requests/account";
 import type { User } from "@/types/user";
-import { signOutFromLocalStorage } from "@/utils/localStorageAccess";
 
 export interface SignUpParams {
   firstName: string;
@@ -83,7 +82,7 @@ class AuthClient {
 
   async signOut(): Promise<{ error?: string }> {
     await account.signOut();
-    signOutFromLocalStorage();
+    localStorage.removeItem("access-token");
 
     return {};
   }
