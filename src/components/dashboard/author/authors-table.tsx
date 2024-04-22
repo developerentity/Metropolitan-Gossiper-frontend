@@ -22,7 +22,7 @@ function noop(): void {
   // do nothing
 }
 
-export interface Customer {
+export interface Author {
   id: string;
   avatar: string;
   name: string;
@@ -32,21 +32,21 @@ export interface Customer {
   createdAt: Date;
 }
 
-interface CustomersTableProps {
+interface AuthorsTableProps {
   count?: number;
   page?: number;
-  rows?: Customer[];
+  rows?: Author[];
   rowsPerPage?: number;
 }
 
-export function CustomersTable({
+export function AuthorsTable({
   count = 0,
   rows = [],
   page = 0,
   rowsPerPage = 0,
-}: CustomersTableProps): React.JSX.Element {
+}: AuthorsTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
-    return rows.map((customer) => customer.id);
+    return rows.map((author) => author.id);
   }, [rows]);
 
   const { selectAll, deselectAll, selectOne, deselectOne, selected } = useSelection(rowIds);
