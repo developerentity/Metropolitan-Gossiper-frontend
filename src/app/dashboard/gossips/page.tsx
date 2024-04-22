@@ -10,8 +10,8 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 
 import { config } from '@/config';
-import { IntegrationCard } from '@/components/dashboard/integrations/integrations-card';
-import { CompaniesFilters } from '@/components/dashboard/integrations/integrations-filters';
+import { GossipsCard } from '@/components/dashboard/gossips/gossips-card';
+import { CompaniesFilters } from '@/components/dashboard/gossips/gossips-filters';
 import getAllGossips from '@/lib/gossips/getAllGossips';
 import { Pagination } from '@/components/pagination';
 
@@ -33,7 +33,7 @@ export default async function Page({
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h4">Integrations</Typography>
+          <Typography variant="h4">Gossips</Typography>
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
             <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />}>
               Import
@@ -53,13 +53,13 @@ export default async function Page({
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
-            <IntegrationCard integration={item} />
+            <GossipsCard gossip={item} />
           </Grid>
         ))}
       </Grid>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
-          currentPath={'/dashboard/integrations'}
+          currentPath={'/dashboard/gossips'}
           totalPages={totalPages}
           page={currentPage} />
       </Box>
