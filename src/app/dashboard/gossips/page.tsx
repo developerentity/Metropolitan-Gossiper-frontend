@@ -14,6 +14,8 @@ import { GossipsCard } from '@/components/dashboard/gossips/gossips-card';
 import { Filter } from '@/components/filter';
 import getAllGossips from '@/lib/gossips/getAllGossips';
 import { Pagination } from '@/components/pagination';
+import { SortOrderSelect } from '@/components/sort-order-select';
+import { Card } from '@mui/material';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -26,8 +28,14 @@ export default async function Page({
   const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
   const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 3
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
+  const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
-  const gossipsData: Promise<GossipsListType> = getAllGossips({ pageNumber: page, pageSize: limit, titleFilter: query })
+  const gossipsData: Promise<GossipsListType> = getAllGossips({
+    pageNumber: page,
+    pageSize: limit,
+    titleFilter: query,
+    sortOrder,
+  })
   const { items, totalPages } = await gossipsData
 
   return (
@@ -50,7 +58,10 @@ export default async function Page({
           </Button>
         </div>
       </Stack>
-      <Filter />
+      <Card sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+        <Filter />
+        <SortOrderSelect />
+      </Card>
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
