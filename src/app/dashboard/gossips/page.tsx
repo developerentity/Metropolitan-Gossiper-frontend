@@ -11,7 +11,7 @@ import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 
 import { config } from '@/config';
 import { GossipsCard } from '@/components/dashboard/gossips/gossips-card';
-import { CompaniesFilters } from '@/components/dashboard/gossips/gossips-filters';
+import { Filter } from '@/components/filter';
 import getAllGossips from '@/lib/gossips/getAllGossips';
 import { Pagination } from '@/components/pagination';
 
@@ -24,10 +24,11 @@ export default async function Page({
 }) {
 
   const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
-  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 6
+  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 3
+  const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
 
-  const gossipsData: Promise<GossipsListType> = getAllGossips({ pageNumber: page, pageSize: limit })
-  const { items, totalPages, currentPage } = await gossipsData
+  const gossipsData: Promise<GossipsListType> = getAllGossips({ pageNumber: page, pageSize: limit, titleFilter: query })
+  const { items, totalPages } = await gossipsData
 
   return (
     <Stack spacing={3}>
@@ -49,7 +50,7 @@ export default async function Page({
           </Button>
         </div>
       </Stack>
-      <CompaniesFilters />
+      <Filter />
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
@@ -58,10 +59,7 @@ export default async function Page({
         ))}
       </Grid>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          currentPath={'/dashboard/gossips'}
-          totalPages={totalPages}
-          page={currentPage} />
+        <Pagination totalPages={totalPages} />
       </Box>
     </Stack>
   );

@@ -2,29 +2,32 @@
 
 import * as React from 'react';
 import { Pagination as PaginationMUI } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-interface IProps {
-  currentPath: string
-  page: number
-  totalPages: number
-}
-
-export function Pagination({ page, totalPages, currentPath }: IProps): React.JSX.Element {
+export function Pagination({ totalPages }: { totalPages: number }): React.JSX.Element {
 
   const router = useRouter()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
 
   const handleChange = (
     _event: React.ChangeEvent<unknown>,
     pageCurrent: number
   ) => {
-    router.push(`${currentPath}?page=${pageCurrent}`)
+    router.push(createPageURL(pageCurrent))
   };
 
   return (
     <PaginationMUI
       count={totalPages}
-      page={page}
+      page={currentPage}
       onChange={handleChange}
       size="small" />
   );
