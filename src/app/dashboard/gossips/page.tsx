@@ -16,6 +16,7 @@ import getAllGossips from '@/lib/gossips/getAllGossips';
 import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
+import Link from 'next/link';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -65,7 +66,9 @@ export default async function Page({
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
-            <GossipsCard gossip={item} />
+            <Link href={`/dashboard/gossips/${item.id}`} style={{ textDecoration: 'none' }}>
+              <GossipsCard gossip={item} />
+            </Link>
           </Grid>
         ))}
       </Grid>

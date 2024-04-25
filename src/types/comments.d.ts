@@ -6,3 +6,10 @@ type CommentType = {
   parent: string | null;
   likes: string[];
 };
+
+type CommentsListType = {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  items: CommentType[];
+};
