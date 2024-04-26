@@ -27,7 +27,7 @@ export default async function Page({
 }) {
 
   const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
-  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 3
+  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 6
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
