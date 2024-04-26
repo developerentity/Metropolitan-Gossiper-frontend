@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
@@ -9,28 +7,43 @@ import Typography from '@mui/material/Typography';
 import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
 import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
+import { CardMedia } from '@mui/material';
 
-export interface GossipsCardProps {
+export interface GossipCardProps {
   gossip: IGossip;
 }
 
-export function GossipsCard({ gossip }: GossipsCardProps): React.JSX.Element {
+
+export function GossipCard({ gossip }: GossipCardProps): React.JSX.Element {
+
   return (
-    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CardContent sx={{ flex: '1 1 auto' }}>
-        <Stack spacing={2}>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Avatar src={gossip.imageUrl} variant="square" />
-          </Box>
-          <Stack spacing={1}>
-            <Typography align="center" variant="h5">
-              {gossip.title}
-            </Typography>
-            <Typography align="center" variant="body1">
-              {gossip.content}
-            </Typography>
-          </Stack>
-        </Stack>
+    <Card sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      transition: 'transform 0.3s',
+      '&:hover': {
+        transform: 'scale(1.05)'
+      }
+    }}>
+      <CardMedia
+        sx={{ height: 140 }}
+        image={gossip.imageUrl || '/assets/no-image.svg'}
+        title="Gossip image"
+        component='img'
+      />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography gutterBottom variant="h5" component="div">
+          {gossip.title}
+        </Typography>
+        <Typography gutterBottom style={{
+          display: '-webkit-box',
+          overflow: 'hidden',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+        }}>
+          {gossip.content}
+        </Typography>
       </CardContent>
       <Divider />
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between', p: 2 }}>

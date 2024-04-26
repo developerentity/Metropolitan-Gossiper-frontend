@@ -2,12 +2,6 @@ import axios from "axios";
 
 const base_url = "http://localhost:5080/gossips/";
 
-export type ResponseGossipsListType = {
-  totalItems: number;
-  totalPages: number;
-  gossips: IGossip[];
-};
-
 export default async function getAllGossips(params: {
   pageNumber?: number;
   authorId?: string;

@@ -10,12 +10,13 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 
 import { config } from '@/config';
-import { GossipsCard } from '@/components/dashboard/gossips/gossips-card';
+import { GossipCard } from '@/components/dashboard/gossips/gossip-card';
 import { Filter } from '@/components/filter';
 import getAllGossips from '@/lib/gossips/getAllGossips';
 import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
+import Link from 'next/link';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -26,7 +27,7 @@ export default async function Page({
 }) {
 
   const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
-  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 3
+  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 6
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
@@ -65,7 +66,9 @@ export default async function Page({
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
-            <GossipsCard gossip={item} />
+            <Link href={`/dashboard/gossips/${item.id}`} style={{ textDecoration: 'none' }}>
+              <GossipCard gossip={item} />
+            </Link>
           </Grid>
         ))}
       </Grid>
