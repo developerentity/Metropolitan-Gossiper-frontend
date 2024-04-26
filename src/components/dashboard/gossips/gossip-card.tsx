@@ -9,12 +9,12 @@ import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
 import { CardMedia } from '@mui/material';
 
-export interface GossipsCardProps {
+export interface GossipCardProps {
   gossip: IGossip;
 }
 
 
-export function GossipsCard({ gossip }: GossipsCardProps): React.JSX.Element {
+export function GossipCard({ gossip }: GossipCardProps): React.JSX.Element {
 
   return (
     <Card sx={{
