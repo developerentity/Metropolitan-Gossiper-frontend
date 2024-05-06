@@ -17,10 +17,9 @@ import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
+import { signIn, useSession } from 'next-auth/react';
 
 import { paths } from '@/paths';
-import { authClient } from '@/lib/auth/client';
-import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -29,16 +28,15 @@ const schema = zod.object({
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = { email: '2try@gmail.com', password: '11223344' } satisfies Values;
+const defaultValues = { email: 'blablad1@gmail.com', password: '11223344' } satisfies Values;
 
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();
 
-  const { checkSession } = useUser();
+  const { status } = useSession()
+  const isPending = status === "loading"
 
   const [showPassword, setShowPassword] = React.useState<boolean>();
-
-  const [isPending, setIsPending] = React.useState<boolean>(false);
 
   const {
     control,
@@ -49,24 +47,11 @@ export function SignInForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
-
-      const { error } = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError('root', { type: 'server', message: error });
-        setIsPending(false);
-        return;
-      }
-
-      // Refresh the auth state
-      await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
+      await signIn('credentials', { email: values.email, password: values.password })
       router.refresh();
-    },
-    [checkSession, router, setError]
+
+      // how to be with errors?? need fix
+    }, [router, setError]
   );
 
   return (

@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react"
 import { SessionProvider } from "next-auth/react"
-import { UserProvider } from '@/contexts/user-context';
+
 import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import { ReduxProvider } from '@/lib/redux/provider';
@@ -16,11 +16,9 @@ const Providers = ({ children }: Props) => {
         <SessionProvider >
             <ReduxProvider>
                 <LocalizationProvider>
-                    <UserProvider>
-                        <ThemeProvider>
-                            {children}
-                        </ThemeProvider>
-                    </UserProvider>
+                    <ThemeProvider>
+                        {children}
+                    </ThemeProvider>
                 </LocalizationProvider>
             </ReduxProvider>
         </SessionProvider>
