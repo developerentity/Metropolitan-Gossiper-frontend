@@ -31,8 +31,13 @@ export const authOptions: NextAuthOptions = {
           label: "Email",
           type: "email",
           placeholder: "example@gmail.com",
+          required: true,
         },
-        password: { label: "Password", type: "password" },
+        password: {
+          label: "Password",
+          type: "password",
+          required: true,
+        },
       },
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null;

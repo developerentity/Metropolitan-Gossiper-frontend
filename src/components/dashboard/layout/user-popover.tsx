@@ -1,6 +1,5 @@
 import * as React from 'react';
 import RouterLink from 'next/link';
-import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -23,13 +22,12 @@ export interface UserPopoverProps {
 
 export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): React.JSX.Element {
 
-  const router = useRouter();
   const { data: session } = useSession()
+  const [error, serError] = React.useState('')
 
   const handleSignOut = React.useCallback(async (): Promise<void> => {
-    await signOut();
-    router.refresh()
-  }, [router]);
+    const res = await signOut({ callbackUrl: paths.auth.signIn });
+  }, []);
 
   return (
     <Popover

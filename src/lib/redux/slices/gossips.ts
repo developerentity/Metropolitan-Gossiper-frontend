@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/redux/store";
-import gossips from "@/requests/gossips";
 import { ItemsListViewModel } from "@/types/response";
+import gossips from "@/lib/requests/gossips";
 
 interface GossipsInitialState {
   gossips: IGossip[];

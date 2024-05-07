@@ -11,11 +11,10 @@ import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
 
 import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comments";
-import getGossip from "@/lib/gossips/getGossip"
 import getCommentsByGossip from "@/lib/gossips/get-comments-by-gossip"
 import { Metadata } from "next";
 import { Suspense } from "react";
-
+import gossips from '@/lib/requests/gossips';
 type Params = {
     params: {
         gossipId: string;
@@ -23,7 +22,7 @@ type Params = {
 }
 
 export async function generateMetadata({ params: { gossipId } }: Params): Promise<Metadata> {
-    const gossipsData: Promise<IGossip> = getGossip(gossipId)
+    const gossipsData: Promise<IGossip> = gossips.getOne(gossipId)
     const gossip = await gossipsData
 
     return {
@@ -33,7 +32,7 @@ export async function generateMetadata({ params: { gossipId } }: Params): Promis
 }
 
 export default async function GossipPage({ params: { gossipId } }: Params) {
-    const gossipsData: Promise<IGossip> = getGossip(gossipId)
+    const gossipsData: Promise<IGossip> = gossips.getOne(gossipId)
     const commentsData: Promise<CommentsListType> = getCommentsByGossip(gossipId)
 
     const gossip = await gossipsData
