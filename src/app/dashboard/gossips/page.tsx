@@ -12,11 +12,12 @@ import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import { config } from '@/config';
 import { GossipCard } from '@/components/dashboard/gossips/gossip-card';
 import { Filter } from '@/components/filter';
-import getAllGossips from '@/lib/gossips/getAllGossips';
+import gossips from '@/lib/requests/gossips';
 import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
 import Link from 'next/link';
+import { paths } from '@/paths';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -31,7 +32,7 @@ export default async function Page({
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
-  const gossipsData: Promise<GossipsListType> = getAllGossips({
+  const gossipsData: Promise<GossipsListType> = gossips.read({
     pageNumber: page,
     pageSize: limit,
     titleFilter: query,
@@ -54,7 +55,12 @@ export default async function Page({
           </Stack>
         </Stack>
         <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
+          <Button
+            href={paths.dashboard.gossips + '/create'}
+            LinkComponent={Link}
+            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+            variant="contained"
+          >
             Add
           </Button>
         </div>
