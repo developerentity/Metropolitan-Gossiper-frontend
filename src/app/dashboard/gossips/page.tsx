@@ -12,7 +12,7 @@ import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import { config } from '@/config';
 import { GossipCard } from '@/components/dashboard/gossips/gossip-card';
 import { Filter } from '@/components/filter';
-import getAllGossips from '@/lib/gossips/getAllGossips';
+import gossips from '@/lib/requests/gossips';
 import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
@@ -31,7 +31,7 @@ export default async function Page({
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
-  const gossipsData: Promise<GossipsListType> = getAllGossips({
+  const gossipsData: Promise<GossipsListType> = gossips.read({
     pageNumber: page,
     pageSize: limit,
     titleFilter: query,

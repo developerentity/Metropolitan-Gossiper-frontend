@@ -1,9 +1,16 @@
-import { getDataByUrl } from "@/lib/requests";
-import { Session } from "next-auth";
+import { getDataByUrl, postDataByUrl } from "@/lib/requests";
+import type { Session } from "next-auth";
 
 const base_url = `${process.env.BACKEND_URL}/gossips`;
 
-async function getAll(params: {
+async function create(
+  data: { title: string; content: string; imageUrl?: string },
+  session: Session | null
+) {
+  return postDataByUrl(`${base_url}/create`, data, session);
+}
+
+async function read(params: {
   pageNumber?: number;
   authorId?: string;
   pageSize?: number;
@@ -11,14 +18,33 @@ async function getAll(params: {
   sortField?: string;
   sortOrder?: string;
 }) {
-  return getDataByUrl(`${base_url}get`);
+  return getDataByUrl(`${base_url}/get`, params);
 }
 
-async function getOne(gossipId: string) {
+async function readOne(gossipId: string) {
   return getDataByUrl(`${base_url}/get/${gossipId}`);
 }
 
+async function readComments(
+  gossipId: string,
+  params?: {
+    pageSize?: string;
+    pageNumber?: string;
+  }
+): Promise<CommentsListType> {
+  const reqParams = params ? { params } : {};
+  return getDataByUrl(`${base_url}/get/${gossipId}/comments`, reqParams);
+}
+
+async function update() {}
+
+async function remove(id: string) {}
+
 export default {
-  getAll,
-  getOne,
+  create,
+  read,
+  readOne,
+  readComments,
+  update,
+  remove,
 };
