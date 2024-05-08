@@ -25,6 +25,7 @@ const CreateGossip = FormSchema.omit({
   imageUrl: true,
   author: true,
   likes: true,
+  createdAt: true,
 });
 
 export async function createGossip(formData: FormData) {

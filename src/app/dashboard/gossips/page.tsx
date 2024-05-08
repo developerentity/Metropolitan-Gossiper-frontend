@@ -17,6 +17,7 @@ import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
 import Link from 'next/link';
+import { paths } from '@/paths';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -54,7 +55,12 @@ export default async function Page({
           </Stack>
         </Stack>
         <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
+          <Button
+            href={paths.dashboard.gossips + '/create'}
+            LinkComponent={Link}
+            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+            variant="contained"
+          >
             Add
           </Button>
         </div>
