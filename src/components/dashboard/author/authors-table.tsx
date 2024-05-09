@@ -22,20 +22,10 @@ function noop(): void {
   // do nothing
 }
 
-export interface Author {
-  id: string;
-  avatar: string;
-  name: string;
-  email: string;
-  address: { city: string; state: string; country: string; street: string };
-  phone: string;
-  createdAt: Date;
-}
-
 interface AuthorsTableProps {
   count?: number;
   page?: number;
-  rows?: Author[];
+  rows?: AuthorType[];
   rowsPerPage?: number;
 }
 
@@ -101,14 +91,18 @@ export function AuthorsTable({
                   <TableCell>
                     <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
                       <Avatar src={row.avatar} />
-                      <Typography variant="subtitle2">{row.name}</Typography>
+                      <Typography variant="subtitle2">
+                        {row.firstName + " " + row.lastName}
+                      </Typography>
                     </Stack>
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>
-                    {row.address.city}, {row.address.state}, {row.address.country}
+                    {/* {row.address.city}, {row.address.state}, {row.address.country} */}
                   </TableCell>
-                  <TableCell>{row.phone}</TableCell>
+                  <TableCell>
+                    {/* {row.phone} */}
+                  </TableCell>
                   <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
                 </TableRow>
               );

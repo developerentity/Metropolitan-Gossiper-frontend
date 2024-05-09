@@ -8,6 +8,7 @@ async function create() {}
 async function read(params: {
   pageNumber?: number;
   pageSize?: number;
+  searchQuery?: string;
   sortField?: string;
   sortOrder?: string;
 }) {

@@ -18,6 +18,7 @@ import { SortOrderSelect } from '@/components/sort-order-select';
 import { Card } from '@mui/material';
 import Link from 'next/link';
 import { paths } from '@/paths';
+import { ItemsListViewModel } from '@/types/response';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -32,7 +33,7 @@ export default async function Page({
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
-  const gossipsData: Promise<GossipsListType> = gossips.read({
+  const gossipsData: Promise<ItemsListViewModel<IGossip>> = gossips.read({
     pageNumber: page,
     pageSize: limit,
     titleFilter: query,
