@@ -11,40 +11,27 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
 import { useSelection } from '@/hooks/use-selection';
-
-function noop(): void {
-  // do nothing
-}
-
-export interface Author {
-  id: string;
-  avatar: string;
-  name: string;
-  email: string;
-  address: { city: string; state: string; country: string; street: string };
-  phone: string;
-  createdAt: Date;
-}
+import { TablePagination } from '@/components/table-pagination';
 
 interface AuthorsTableProps {
   count?: number;
   page?: number;
-  rows?: Author[];
+  rows?: AuthorType[];
   rowsPerPage?: number;
 }
 
 export function AuthorsTable({
   count = 0,
   rows = [],
-  page = 0,
+  page = 1,
   rowsPerPage = 0,
 }: AuthorsTableProps): React.JSX.Element {
+
   const rowIds = React.useMemo(() => {
     return rows.map((author) => author.id);
   }, [rows]);
@@ -101,14 +88,18 @@ export function AuthorsTable({
                   <TableCell>
                     <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
                       <Avatar src={row.avatar} />
-                      <Typography variant="subtitle2">{row.name}</Typography>
+                      <Typography variant="subtitle2">
+                        {row.firstName + " " + row.lastName}
+                      </Typography>
                     </Stack>
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>
-                    {row.address.city}, {row.address.state}, {row.address.country}
+                    {/* {row.address.city}, {row.address.state}, {row.address.country} */}
                   </TableCell>
-                  <TableCell>{row.phone}</TableCell>
+                  <TableCell>
+                    {/* {row.phone} */}
+                  </TableCell>
                   <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
                 </TableRow>
               );
@@ -117,15 +108,7 @@ export function AuthorsTable({
         </Table>
       </Box>
       <Divider />
-      <TablePagination
-        component="div"
-        count={count}
-        onPageChange={noop}
-        onRowsPerPageChange={noop}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+      <TablePagination count={count} page={page} limit={rowsPerPage} />
     </Card>
   );
 }

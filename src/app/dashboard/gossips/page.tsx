@@ -8,6 +8,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
+import Link from 'next/link';
+import { Card } from '@mui/material';
 
 import { config } from '@/config';
 import { GossipCard } from '@/components/dashboard/gossips/gossip-card';
@@ -15,9 +17,8 @@ import { Filter } from '@/components/filter';
 import gossips from '@/lib/requests/gossips';
 import { Pagination } from '@/components/pagination';
 import { SortOrderSelect } from '@/components/sort-order-select';
-import { Card } from '@mui/material';
-import Link from 'next/link';
 import { paths } from '@/paths';
+import { ItemsListViewModel } from '@/types/response';
 
 export const metadata = { title: `Gossips | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -32,7 +33,7 @@ export default async function Page({
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
 
-  const gossipsData: Promise<GossipsListType> = gossips.read({
+  const gossipsData: Promise<ItemsListViewModel<IGossip>> = gossips.read({
     pageNumber: page,
     pageSize: limit,
     titleFilter: query,
@@ -66,7 +67,7 @@ export default async function Page({
         </div>
       </Stack>
       <Card sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-        <Filter />
+        <Filter title='Search gossips...' />
         <SortOrderSelect />
       </Card>
       <Grid container spacing={3}>

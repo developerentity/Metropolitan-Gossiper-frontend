@@ -8,10 +8,3 @@ type IGossip = {
   imageUrl?: string;
   createdAt: string;
 };
-
-type GossipsListType = {
-  totalItems: number;
-  totalPages: number;
-  currentPage: number;
-  items: IGossip[];
-};

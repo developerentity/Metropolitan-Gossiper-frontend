@@ -7,7 +7,7 @@ import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/di
 import { useDebouncedCallback } from 'use-debounce'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function Filter(): React.JSX.Element {
+export function Filter({ title }: { title: string }): React.JSX.Element {
 
   const searchParams = useSearchParams();
   const { replace } = useRouter();
@@ -29,7 +29,7 @@ export function Filter(): React.JSX.Element {
       defaultValue={searchParams.get('query')?.toString()}
       onChange={(e) => handleSearch(e.target.value)}
       fullWidth
-      placeholder="Search gossips..."
+      placeholder={title}
       startAdornment={
         <InputAdornment position="start">
           <MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />
