@@ -11,16 +11,12 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
 import { useSelection } from '@/hooks/use-selection';
-
-function noop(): void {
-  // do nothing
-}
+import { TablePagination } from '@/components/table-pagination';
 
 interface AuthorsTableProps {
   count?: number;
@@ -32,9 +28,10 @@ interface AuthorsTableProps {
 export function AuthorsTable({
   count = 0,
   rows = [],
-  page = 0,
+  page = 1,
   rowsPerPage = 0,
 }: AuthorsTableProps): React.JSX.Element {
+
   const rowIds = React.useMemo(() => {
     return rows.map((author) => author.id);
   }, [rows]);
@@ -111,15 +108,7 @@ export function AuthorsTable({
         </Table>
       </Box>
       <Divider />
-      <TablePagination
-        component="div"
-        count={count}
-        onPageChange={noop}
-        onRowsPerPageChange={noop}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+      <TablePagination count={count} page={page} limit={rowsPerPage} />
     </Card>
   );
 }

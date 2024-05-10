@@ -12,7 +12,6 @@ import { AuthorsFilters } from '@/components/dashboard/author/authors-filters';
 import { AuthorsTable } from '@/components/dashboard/author/authors-table';
 import authors from '@/lib/requests/authors';
 import { ItemsListViewModel } from '@/types/response';
-import { logger } from '@/lib/default-logger';
 
 export const metadata = { title: `Authors | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -23,7 +22,7 @@ export default async function Page({
 }) {
 
   const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
-  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 5
+  const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 2
   const query = typeof searchParams.query === 'string' ? searchParams.query : undefined
   const sortField = typeof searchParams.sortField === 'string' ? searchParams.sortField : undefined
   const sortOrder = typeof searchParams.sortOrder === 'string' ? searchParams.sortOrder : undefined
@@ -35,11 +34,7 @@ export default async function Page({
     sortField,
     sortOrder,
   })
-  const { items, totalPages } = await authorsData
-
-  const paginatedAuthors = applyPagination(items, page - 1, limit);
-
-  logger.debug(items)
+  const { items, totalPages, totalItems } = await authorsData
 
   return (
     <Stack spacing={3}>
@@ -63,15 +58,11 @@ export default async function Page({
       </Stack>
       <AuthorsFilters />
       <AuthorsTable
-        count={totalPages}
-        page={page - 1}
-        rows={paginatedAuthors}
+        count={totalItems}
+        page={page}
+        rows={items}
         rowsPerPage={limit}
       />
     </Stack>
   );
-}
-
-function applyPagination(rows: AuthorType[], page: number, rowsPerPage: number): AuthorType[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }
