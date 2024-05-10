@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
+import Card from '@mui/material/Card';
 
 import { config } from '@/config';
-import { AuthorsFilters } from '@/components/dashboard/author/authors-filters';
 import { AuthorsTable } from '@/components/dashboard/author/authors-table';
 import authors from '@/lib/requests/authors';
 import { ItemsListViewModel } from '@/types/response';
+import { Filter } from '@/components/filter';
 
 export const metadata = { title: `Authors | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -34,7 +35,7 @@ export default async function Page({
     sortField,
     sortOrder,
   })
-  const { items, totalPages, totalItems } = await authorsData
+  const { items, totalItems } = await authorsData
 
   return (
     <Stack spacing={3}>
@@ -50,13 +51,10 @@ export default async function Page({
             </Button>
           </Stack>
         </Stack>
-        <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-            Add
-          </Button>
-        </div>
       </Stack>
-      <AuthorsFilters />
+      <Card sx={{ p: 2 }}>
+        <Filter title='Search authors...' />
+      </Card>
       <AuthorsTable
         count={totalItems}
         page={page}
