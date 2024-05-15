@@ -19,6 +19,7 @@ export const postDataByUrl = async (
   url: string,
   data: object,
   session: Session | null,
+  isHasFile?: boolean,
   params?: object
 ) => {
   const token = session?.backendTokens.accessToken;
@@ -27,7 +28,7 @@ export const postDataByUrl = async (
     const response = await axios.post(url, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": isHasFile ? "multipart/form-data" : "application/json",
       },
       ...reqParams,
     });

@@ -25,6 +25,7 @@ export default async function UpdatePasswordForm() {
                         <FormControl fullWidth>
                             <InputLabel>Title</InputLabel>
                             <OutlinedInput label="Title" name="title" type="text" required />
+                            <input type='file' name='gossipCover' />
                         </FormControl>
                         <FormControl fullWidth>
                             <InputLabel>Content</InputLabel>

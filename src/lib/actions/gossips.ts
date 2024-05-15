@@ -29,17 +29,31 @@ const CreateGossip = FormSchema.omit({
 });
 
 export async function createGossip(formData: FormData) {
+  "use server";
+
   const session = await getServerSession(authOptions);
+
+  const file: File | null = formData.get("gossipCover") as unknown as File;
+
   const { title, content } = CreateGossip.parse({
     title: formData.get("title"),
     content: formData.get("content"),
   });
-  await gossips.create({ title, content }, session);
+
+  const data = new FormData();
+  data.append("title", title);
+  data.append("content", content);
+  if (file) data.append("gossipCover", file);
+
+  await gossips.create(data, session);
+
   revalidatePath(paths.dashboard.gossips);
   redirect(paths.dashboard.gossips);
 }
 
 export async function deleteGossip(id: string) {
+  "use server";
+
   await gossips.remove(id);
   revalidatePath(paths.dashboard.gossips);
 }

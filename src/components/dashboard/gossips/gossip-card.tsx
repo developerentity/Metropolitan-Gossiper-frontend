@@ -28,7 +28,7 @@ export function GossipCard({ gossip }: GossipCardProps): React.JSX.Element {
     }}>
       <CardMedia
         sx={{ height: 140 }}
-        image={gossip.imageUrl || '/assets/no-image.svg'}
+        image={gossip.imageUrl || '/assets/no-image.png'}
         title="Gossip image"
         component='img'
       />
