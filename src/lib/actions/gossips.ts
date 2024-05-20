@@ -43,7 +43,7 @@ export async function createGossip(formData: FormData) {
   const data = new FormData();
   data.append("title", title);
   data.append("content", content);
-  if (file) data.append("gossipCover", file);
+  if (file) data.append("file", file);
 
   await gossips.create(data, session);
 
@@ -54,6 +54,10 @@ export async function createGossip(formData: FormData) {
 export async function deleteGossip(id: string) {
   "use server";
 
-  await gossips.remove(id);
+  const session = await getServerSession(authOptions);
+
+  await gossips.remove(id, session);
+
   revalidatePath(paths.dashboard.gossips);
+  redirect(paths.dashboard.gossips);
 }
