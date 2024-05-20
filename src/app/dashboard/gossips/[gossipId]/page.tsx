@@ -14,6 +14,7 @@ import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comment
 import { Metadata } from "next";
 import { Suspense } from "react";
 import gossips from '@/lib/requests/gossips';
+import { deleteGossip } from '@/lib/actions/gossips';
 
 type Params = {
     params: {
@@ -36,6 +37,8 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
     const commentsData: Promise<CommentsListType> = gossips.readComments(gossipId)
 
     const gossip = await gossipsData
+
+    const deleteGossipWithId = deleteGossip.bind(null, gossip.id)
 
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '600px' }}>
@@ -69,6 +72,11 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
                 </Stack>
             </Stack>
             <Divider />
+            <form action={deleteGossipWithId}>
+                <button type="submit">
+                    Delete
+                </button>
+            </form>
             <CardContent sx={{ flex: '1 1 auto' }}>
                 <Stack spacing={2}>
                     <Suspense fallback={<h2>Loading...</h2>}>

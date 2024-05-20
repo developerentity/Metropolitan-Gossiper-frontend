@@ -1,13 +1,10 @@
-import { getDataByUrl, postDataByUrl } from "@/lib/requests";
+import { deleteDataByUrl, getDataByUrl, postDataByUrl } from "@/lib/requests";
 import type { Session } from "next-auth";
 
 const base_url = `${process.env.BACKEND_URL}/gossips`;
 
-async function create(
-  data: { title: string; content: string; imageUrl?: string },
-  session: Session | null
-) {
-  return postDataByUrl(`${base_url}/create`, data, session);
+async function create(data: FormData, session: Session | null) {
+  return postDataByUrl(`${base_url}/create`, data, session, true);
 }
 
 async function read(params: {
@@ -38,7 +35,9 @@ async function readComments(
 
 async function update() {}
 
-async function remove(id: string) {}
+async function remove(id: string, session: Session | null) {
+  return deleteDataByUrl(`${base_url}/delete/${id}`, session);
+}
 
 export default {
   create,
