@@ -5,7 +5,7 @@ import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 async function refreshToken(token: JWT): Promise<JWT> {
-  const res = await fetch(`${process.env.BACKEND_URL}/account/auth/refresh/`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account/auth/refresh/`, {
     method: "POST",
     headers: {
       authorization: `Refresh ${token.backendTokens.refreshToken}`,
@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
         const { email, password } = credentials;
         const res = await fetch(
-          `${process.env.BACKEND_URL}/account/auth/signin`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/account/auth/signin`,
           {
             method: "POST",
             body: JSON.stringify({ email, password }),

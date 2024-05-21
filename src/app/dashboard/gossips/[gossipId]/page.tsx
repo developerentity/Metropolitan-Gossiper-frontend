@@ -7,7 +7,6 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
-import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
 import { Pen } from '@phosphor-icons/react/dist/ssr/Pen';
 import RouterLink from 'next/link';
@@ -21,6 +20,7 @@ import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comment
 import gossips from '@/lib/requests/gossips';
 import { deleteGossip } from '@/lib/actions/gossips';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { LikesButton } from '@/components/dashboard/gossips/likes-button';
 
 type Params = {
     params: {
@@ -74,10 +74,7 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
                     </Typography>
                 </Stack>
                 <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-                    <Heart fontSize="var(--icon-fontSize-sm)" />
-                    <Typography color="text.secondary" display="inline" variant="body2">
-                        {gossip.likes?.length} likes
-                    </Typography>
+                    <LikesButton likes={gossip.likes || []} gossipId={gossip.id} />
                 </Stack>
             </Stack>
             <Divider />
