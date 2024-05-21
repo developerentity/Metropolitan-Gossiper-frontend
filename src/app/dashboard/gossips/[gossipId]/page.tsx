@@ -9,10 +9,14 @@ import Typography from '@mui/material/Typography';
 import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
 import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
-
-import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comments";
+import { Pen } from '@phosphor-icons/react/dist/ssr/Pen';
+import RouterLink from 'next/link';
+import { paths } from '@/paths';
+import { Button } from '@mui/material';
 import { Metadata } from "next";
 import { Suspense } from "react";
+
+import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comments";
 import gossips from '@/lib/requests/gossips';
 import { deleteGossip } from '@/lib/actions/gossips';
 
@@ -73,9 +77,18 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
             </Stack>
             <Divider />
             <form action={deleteGossipWithId}>
-                <button type="submit">
-                    Delete
-                </button>
+                <Box sx={{ display: "flex", justifyContent: 'flex-end', p: 1 }}>
+                    <Button
+                        component={RouterLink}
+                        href={paths.dashboard.gossips.edit(gossipId)}
+                        startIcon={<Pen fontSize="var(--icon-fontSize-md)" />}
+                        variant="contained">
+                        Edit
+                    </Button>
+                    <Button type="submit" variant="contained" sx={{ ml: 1 }}>
+                        Delete
+                    </Button>
+                </Box>
             </form>
             <CardContent sx={{ flex: '1 1 auto' }}>
                 <Stack spacing={2}>

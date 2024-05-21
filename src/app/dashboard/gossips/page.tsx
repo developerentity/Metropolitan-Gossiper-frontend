@@ -57,7 +57,7 @@ export default async function Page({
         </Stack>
         <div>
           <Button
-            href={paths.dashboard.gossips + '/create'}
+            href={paths.dashboard.gossips.create}
             LinkComponent={Link}
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
@@ -73,7 +73,7 @@ export default async function Page({
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid key={item.id} lg={4} md={6} xs={12}>
-            <Link href={`/dashboard/gossips/${item.id}`} style={{ textDecoration: 'none' }}>
+            <Link href={paths.dashboard.gossips.view(item.id)} style={{ textDecoration: 'none' }}>
               <GossipCard gossip={item} />
             </Link>
           </Grid>
