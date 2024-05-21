@@ -15,10 +15,12 @@ import { paths } from '@/paths';
 import { Button } from '@mui/material';
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { getServerSession } from 'next-auth';
 
 import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comments";
 import gossips from '@/lib/requests/gossips';
 import { deleteGossip } from '@/lib/actions/gossips';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 type Params = {
     params: {
@@ -37,12 +39,15 @@ export async function generateMetadata({ params: { gossipId } }: Params): Promis
 }
 
 export default async function GossipPage({ params: { gossipId } }: Params) {
+
     const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
     const commentsData: Promise<CommentsListType> = gossips.readComments(gossipId)
 
+    const session = await getServerSession(authOptions)
     const gossip = await gossipsData
 
     const deleteGossipWithId = deleteGossip.bind(null, gossip.id)
+    const isOwner = gossip.author === session?.user.id
 
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '600px' }}>
@@ -76,7 +81,7 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
                 </Stack>
             </Stack>
             <Divider />
-            <form action={deleteGossipWithId}>
+            {isOwner && <form action={deleteGossipWithId}>
                 <Box sx={{ display: "flex", justifyContent: 'flex-end', p: 1 }}>
                     <Button
                         component={RouterLink}
@@ -89,7 +94,7 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
                         Delete
                     </Button>
                 </Box>
-            </form>
+            </form>}
             <CardContent sx={{ flex: '1 1 auto' }}>
                 <Stack spacing={2}>
                     <Suspense fallback={<h2>Loading...</h2>}>
