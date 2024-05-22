@@ -16,7 +16,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import { getServerSession } from 'next-auth';
 
-import GossipComments from "@/components/dashboard/gossips/gossip/gossip-comments";
+import GossipComments from "@/components/dashboard/gossips/gossip/comments-component";
 import gossips from '@/lib/requests/gossips';
 import { deleteGossip } from '@/lib/actions/gossips';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -95,7 +95,10 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
             <CardContent sx={{ flex: '1 1 auto' }}>
                 <Stack spacing={2}>
                     <Suspense fallback={<h2>Loading...</h2>}>
-                        <GossipComments promise={commentsData} />
+                        <GossipComments
+                            promise={commentsData}
+                            gossipId={gossipId}
+                        />
                     </Suspense>
                 </Stack>
             </CardContent>

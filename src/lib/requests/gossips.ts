@@ -55,6 +55,18 @@ async function unlike(gossipId: string, session: Session | null) {
   return deleteDataByUrl(`${likes_url}/gossip/${gossipId}/unlike`, session);
 }
 
+async function createComment(
+  gossipId: string,
+  data: { parent: string | null; content: string },
+  session: Session | null
+) {
+  return postDataByUrl(`${base_url}/create/${gossipId}/comment`, data, session);
+}
+
+async function deleteComment(commentId: string, session: Session | null) {
+  return deleteDataByUrl(`${base_url}/delete/comment/${commentId}`, session);
+}
+
 export default {
   create,
   read,
@@ -64,4 +76,6 @@ export default {
   remove,
   like,
   unlike,
+  createComment,
+  deleteComment,
 };
