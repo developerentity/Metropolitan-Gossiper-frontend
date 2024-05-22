@@ -21,11 +21,13 @@ import gossips from '@/lib/requests/gossips';
 import { deleteGossip } from '@/lib/actions/gossips';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LikesButton } from '@/components/dashboard/gossips/likes-button';
+import PaginationTrigger from '@/components/pagination-trigger';
 
 type Params = {
     params: {
         gossipId: string;
-    }
+    },
+    searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata({ params: { gossipId } }: Params): Promise<Metadata> {
@@ -38,10 +40,16 @@ export async function generateMetadata({ params: { gossipId } }: Params): Promis
     }
 }
 
-export default async function GossipPage({ params: { gossipId } }: Params) {
+export default async function GossipPage({ params, searchParams }: Params) {
+
+    const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
+    const limit = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 10
+    const gossipId = params.gossipId
 
     const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
-    const commentsData: Promise<CommentsListType> = gossips.readComments(gossipId)
+    const commentsData: Promise<CommentsListType> =
+        gossips.readComments(gossipId, { pageSize: limit, pageNumber: page })
+    const { totalItems: totalComments } = await commentsData
 
     const session = await getServerSession(authOptions)
     const gossip = await gossipsData
@@ -102,6 +110,12 @@ export default async function GossipPage({ params: { gossipId } }: Params) {
                     </Suspense>
                 </Stack>
             </CardContent>
+            <PaginationTrigger
+                currentPath={paths.dashboard.gossips.view(gossipId)}
+                limit={limit}
+                expandSize={5}
+                reachedEnd={totalComments <= limit}
+            />
         </Card>
     )
 }

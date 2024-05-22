@@ -30,13 +30,12 @@ async function readOne(gossipId: string) {
 
 async function readComments(
   gossipId: string,
-  params?: {
-    pageSize?: string;
-    pageNumber?: string;
+  params: {
+    pageSize?: number;
+    pageNumber?: number;
   }
 ): Promise<CommentsListType> {
-  const reqParams = params ? { params } : {};
-  return getDataByUrl(`${base_url}/get/${gossipId}/comments`, reqParams);
+  return getDataByUrl(`${base_url}/get/${gossipId}/comments`, params);
 }
 
 async function edit(id: string, data: FormData, session: Session | null) {
