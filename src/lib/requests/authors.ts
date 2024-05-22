@@ -1,7 +1,7 @@
 import { getDataByUrl } from "@/lib/requests";
 import type { Session } from "next-auth";
 
-const base_url = `${process.env.BACKEND_URL}/users`;
+const base_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users`;
 
 async function create() {}
 

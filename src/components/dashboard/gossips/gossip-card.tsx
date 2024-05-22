@@ -5,14 +5,12 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
-import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import dayjs from 'dayjs';
 import { CardMedia } from '@mui/material';
 
 export interface GossipCardProps {
   gossip: IGossip;
 }
-
 
 export function GossipCard({ gossip }: GossipCardProps): React.JSX.Element {
 
@@ -54,7 +52,6 @@ export function GossipCard({ gossip }: GossipCardProps): React.JSX.Element {
           </Typography>
         </Stack>
         <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-          <Heart fontSize="var(--icon-fontSize-sm)" />
           <Typography color="text.secondary" display="inline" variant="body2">
             {gossip.likes.length} likes
           </Typography>

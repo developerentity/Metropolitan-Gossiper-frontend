@@ -16,7 +16,7 @@ export const navItems = [
   // },
   { key: 'overview', title: 'Overview', href: paths.dashboard.overview, icon: 'chart-pie' },
   { key: 'authors', title: 'Authors', href: paths.dashboard.authors, icon: 'users' },
-  { key: 'gossips', title: 'Gossips', href: paths.dashboard.gossips, icon: 'star-four' },
+  { key: 'gossips', title: 'Gossips', href: paths.dashboard.gossips.list, icon: 'star-four' },
   { key: 'settings', title: 'Settings', href: paths.dashboard.settings, icon: 'gear-six' },
   { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
   { key: 'error', title: 'Error', href: paths.errors.notFound, icon: 'x-square' },

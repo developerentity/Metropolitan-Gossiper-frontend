@@ -6,20 +6,42 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
-import { createGossip } from '@/lib/actions/gossips';
-import { Box, TextField } from '@mui/material';
+import { editGossipAction } from '@/lib/actions/gossips';
+import gossips from '@/lib/requests/gossips';
+import { Metadata } from 'next';
 import { Image as ImageIcon } from '@phosphor-icons/react/dist/ssr/Image';
+import { Box, TextField } from '@mui/material';
 
-export default async function CreateGossipPage() {
+type Params = {
+    params: {
+        gossipId: string;
+    }
+}
+
+export async function generateMetadata({ params: { gossipId } }: Params): Promise<Metadata> {
+    const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
+    const gossip = await gossipsData
+
+    return {
+        title: `Edit | ${gossip.title} | Gossips | Dashboard`,
+        description: `This is the edit page of ${gossip.title} gossip.`,
+    }
+}
+
+export default async function EditGossipPage({ params: { gossipId } }: Params) {
+
+    const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
+    const gossip = await gossipsData
+
+    const editGossipActionWithId = editGossipAction.bind(null, gossip.id)
+
     return (
-        <form action={createGossip}>
+        <form action={editGossipActionWithId}>
             <Card>
                 <CardHeader
-                    subheader="You are able to share there whatever you want"
-                    title="Create Gossip"
+                    subheader={"Edit gossip"}
+                    title={gossip.title}
                 />
                 <Divider />
                 <CardContent>
@@ -37,16 +59,12 @@ export default async function CreateGossipPage() {
                                     <input type="file" name='gossipCover' style={styles} />
                                 </Button>
                             </Box>
-
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <InputLabel>Title</InputLabel>
-                            <OutlinedInput label="Title" name="title" type="text" required />
                         </FormControl>
                         <TextField
                             fullWidth
                             label="Content"
                             name="content"
+                            defaultValue={gossip.content}
                             required
                             multiline
                             rows={5}
@@ -62,10 +80,9 @@ export default async function CreateGossipPage() {
                         />
                     </Stack>
                     <CardActions sx={{ justifyContent: 'flex-end', px: 0, mt: 1 }}>
-                        <Button type="submit" variant="contained">Share</Button>
+                        <Button type="submit" variant="contained">Save</Button>
                     </CardActions>
                 </CardContent>
-
             </Card>
         </form>
     );

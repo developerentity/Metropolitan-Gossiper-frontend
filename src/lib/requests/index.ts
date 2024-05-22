@@ -19,7 +19,7 @@ export const postDataByUrl = async (
   url: string,
   data: object,
   session: Session | null,
-  isHasFile?: boolean,
+  isThisFormData?: boolean,
   params?: object
 ) => {
   const token = session?.backendTokens.accessToken;
@@ -28,7 +28,9 @@ export const postDataByUrl = async (
     const response = await axios.post(url, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": isHasFile ? "multipart/form-data" : "application/json",
+        "Content-Type": isThisFormData
+          ? "multipart/form-data"
+          : "application/json",
       },
       ...reqParams,
     });
@@ -42,6 +44,7 @@ export const updateDataByUrl = async (
   url: string,
   data: object,
   session: Session | null,
+  isThisFormData?: boolean,
   params?: object
 ) => {
   const token = session?.backendTokens.accessToken;
@@ -50,7 +53,9 @@ export const updateDataByUrl = async (
     const response = await axios.patch(url, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": isThisFormData
+          ? "multipart/form-data"
+          : "application/json",
       },
       ...reqParams,
     });
@@ -64,6 +69,7 @@ export const putDataByUrl = async (
   url: string,
   data: object,
   session: Session | null,
+  isThisFormData?: boolean,
   params?: object
 ) => {
   const token = session?.backendTokens.accessToken;
@@ -72,7 +78,9 @@ export const putDataByUrl = async (
     const response = await axios.put(url, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": isThisFormData
+          ? "multipart/form-data"
+          : "application/json",
       },
       ...reqParams,
     });
