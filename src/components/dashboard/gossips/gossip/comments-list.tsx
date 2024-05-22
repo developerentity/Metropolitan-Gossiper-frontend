@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from "react";
+import { Paper } from "@mui/material";
+
 import { Comment } from "./comment";
-import CommentForm from "./comment-form";
 
 type Props = {
     commentsData: CommentsListType
-    gossipId: string
 }
 
-export default function CommentsList({ commentsData, gossipId }: Props) {
+export default function CommentsList({ commentsData }: Props) {
 
     const [replyTo, setReplyTo] = useState<string | null>(null);
     const handleInputClose = () => {
@@ -31,25 +31,19 @@ export default function CommentsList({ commentsData, gossipId }: Props) {
 
     const renderComments = (comments: CommentType[]) =>
         comments.map(comment => (
-            <Comment
-                key={comment.id}
-                comment={comment}
-                replies={replies[comment.id]}
-                onReplyClick={(id) => setReplyTo(replyTo === id ? null : id)}
-                showReplyInput={replyTo === comment.id}
-                handleInputClose={handleInputClose}
-            />
+            <Paper key={comment.id} elevation={4} sx={{ px: 2 }}>
+                <Comment
+                    comment={comment}
+                    replies={replies[comment.id]?.reverse()}
+                    onReplyClick={(id) => setReplyTo(replyTo === id ? null : id)}
+                    showReplyInput={replyTo === comment.id}
+                    handleInputClose={handleInputClose}
+                />
+            </Paper>
         ));
 
     return (
         <div>
-            {!replyTo && (
-                <CommentForm
-                    label="Leave your comment there"
-                    gossipId={gossipId}
-                    parent={null}
-                    handleInputClose={handleInputClose} />
-            )}
             {renderComments(topLevelComments)}
         </div>
     );

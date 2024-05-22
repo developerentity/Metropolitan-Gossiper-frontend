@@ -6,7 +6,7 @@ import { ArrowBendDoubleUpLeft, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/navigation";
 
 import gossips from "@/lib/requests/gossips";
-import CommentForm from "./comment-form";
+import ThreadInput from "./thread-input";
 
 type Props = {
     comment: CommentType,
@@ -78,8 +78,7 @@ export function Comment({
 
             {showReplyInput && (
                 <div style={{ marginTop: 10 }}>
-                    <CommentForm
-                        label="Reply to comment thread"
+                    <ThreadInput
                         parent={comment.id}
                         gossipId={comment.gossip}
                         handleInputClose={handleInputClose}

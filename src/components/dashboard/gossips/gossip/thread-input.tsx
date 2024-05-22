@@ -2,32 +2,22 @@
 
 import * as React from 'react';
 import { Button, TextField } from '@mui/material';
-import gossips from '@/lib/requests/gossips';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+import gossips from '@/lib/requests/gossips';
+
 type Props = {
-    label: string,
     gossipId: string,
-    parent: string | null,
+    parent: string,
     handleInputClose: () => void
 }
 
-export default function CommentForm({ label, parent, gossipId, handleInputClose }: Props) {
+export default function ThreadInput({ parent, gossipId, handleInputClose }: Props) {
 
     const { data: session } = useSession()
     const router = useRouter();
     const [content, setContent] = React.useState('')
-    const [disabled, setDisabled] = React.useState(true)
-
-
-    React.useEffect(() => {
-        if (content !== '') {
-            setDisabled(false)
-        } else {
-            setDisabled(true)
-        }
-    }, [content])
 
     const publishComment = async () => {
         await gossips.createComment(gossipId, { parent, content }, session)
@@ -37,9 +27,7 @@ export default function CommentForm({ label, parent, gossipId, handleInputClose 
     }
 
     const handleSubmit = async () =>
-        parent
-            ? content ? publishComment() : handleInputClose()
-            : publishComment()
+        content ? publishComment() : handleInputClose()
 
 
     return (
@@ -48,24 +36,17 @@ export default function CommentForm({ label, parent, gossipId, handleInputClose 
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 fullWidth
-                label={label}
+                label={"Continue thread there"}
                 multiline
                 rows={5}
                 variant="outlined"
                 InputProps={{ style: { height: 140 }, }}
-                sx={{ '& .MuiOutlinedInput-root': { resize: 'none', }, }}
-            />
-
+                sx={{ '& .MuiOutlinedInput-root': { resize: 'none', }, }} />
             <Button
                 onClick={handleSubmit}
                 variant="contained"
-                disabled={!parent ? disabled : false}
-                sx={{ mt: 1 }}
-            >
-                {parent
-                    ? content ? "Publish" : "Close"
-                    : "Publish"
-                }
+                sx={{ mt: 1 }}>
+                {content ? "Publish" : "Close"}
             </Button>
         </form>
     );
