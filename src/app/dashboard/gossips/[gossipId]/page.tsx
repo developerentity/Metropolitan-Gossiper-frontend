@@ -71,7 +71,10 @@ export default async function GossipPage({ params, searchParams }: Params) {
                     </Typography>
                 </Stack>
                 <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-                    <LikesButton likes={gossip.likes || []} gossipId={gossip.id} />
+                    <LikesButton
+                        likes={gossip.likes || []}
+                        likedItemId={gossip.id}
+                    />
                 </Stack>
             </Stack>
             <Divider />
