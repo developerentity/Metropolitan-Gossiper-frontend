@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import gossips from "@/lib/requests/gossips";
 import ThreadInput from "./thread-input";
+import InteractRow from "./comment/interact-row";
 
 type Props = {
     comment: CommentType,
@@ -62,6 +63,11 @@ export function Comment({
                         </IconButton>}
                 </Box>
             </Box>
+            <InteractRow
+                comment={comment}
+                isReplyInputShown={showReplyInput}
+                onReplyCallback={() => onReplyClick(comment.id)}
+                handleDelete={handleDelete} />
             {replies?.length > 0 && (
                 <div>
                     {replies.map(reply => (

@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
     Box,
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -38,13 +39,13 @@ export default function DeleteButton({ title, description, onDeleteCallback, siz
 
     return (
         <Box>
-            <Button
+            <Chip
                 onClick={handleClickOpen}
-                startIcon={<Trash size={24} />}
-                variant="contained"
-                sx={{ ml: 1 }}>
-                Delete
-            </Button>
+                sx={{ cursor: "pointer", px: 1 }}
+                label='Delete'
+                variant="outlined"
+                color="primary"
+                icon={<Trash size={16} />} />
             <Dialog
                 open={open}
                 onClose={handleClose}
