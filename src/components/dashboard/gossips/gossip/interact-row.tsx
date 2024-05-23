@@ -5,10 +5,11 @@ import RouterLink from 'next/link';
 import { Box, Button, TextField } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import { paths } from '@/paths';
-import { PenNib, PencilLine, Trash } from '@phosphor-icons/react/dist/ssr';
+import { PenNib, PencilLine } from '@phosphor-icons/react/dist/ssr';
 import { useRouter } from 'next/navigation';
 
 import gossips from '@/lib/requests/gossips';
+import DeleteButton from '../delete-button';
 
 type Props = {
     gossip: IGossip
@@ -56,7 +57,7 @@ export default function InteractRow({ gossip }: Props) {
                     </Button>
                 </Box>
                 {isOwner &&
-                    <Box >
+                    <Box display={'flex'}>
                         <Button
                             component={RouterLink}
                             href={paths.dashboard.gossips.edit(gossip.id)}
@@ -64,13 +65,10 @@ export default function InteractRow({ gossip }: Props) {
                             variant="contained">
                             Edit
                         </Button>
-                        <Button
-                            onClick={deleteGossipHandler}
-                            startIcon={<Trash size={24} />}
-                            variant="contained"
-                            sx={{ ml: 1 }}>
-                            Delete
-                        </Button>
+                        <DeleteButton
+                            onDeleteCallback={deleteGossipHandler}
+                            title='Attention'
+                            description='You are sure you want to delete this gossip ' />
                     </Box >
                 }
             </ Box>
