@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import * as React from 'react';
@@ -31,9 +29,7 @@ export default function InteractRow({
                     title='Attention'
                     description='Are you sure you want to remove this comment?'
                     onDeleteCallback={handleDelete} />
-                <LikesButton
-                    likedItemId={comment.id}
-                    likes={comment.likes} />
+                <LikesButton likedItemId={comment.id} />
                 {!comment.parent && !isReplyInputShown && < Chip
                     onClick={onReplyCallback}
                     sx={{ cursor: "pointer", px: 1 }}

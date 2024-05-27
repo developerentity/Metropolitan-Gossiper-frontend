@@ -7,7 +7,6 @@ import {
 import type { Session } from "next-auth";
 
 const base_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/gossips`;
-const likes_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/likes`;
 
 async function create(data: FormData, session: Session | null) {
   return postDataByUrl(`${base_url}/create`, data, session, true);
@@ -46,12 +45,16 @@ async function remove(id: string, session: Session | null) {
   return deleteDataByUrl(`${base_url}/delete/${id}`, session);
 }
 
-async function like(gossipId: string, session: Session | null) {
-  return postDataByUrl(`${likes_url}/gossip/${gossipId}/like`, {}, session);
+async function getLikes(itemId: string): Promise<string[]> {
+  return getDataByUrl(`${base_url}/get/${itemId}/likes`);
 }
 
-async function unlike(gossipId: string, session: Session | null) {
-  return deleteDataByUrl(`${likes_url}/gossip/${gossipId}/unlike`, session);
+async function like(itemId: string, session: Session | null) {
+  return await postDataByUrl(`${base_url}/${itemId}/like`, {}, session);
+}
+
+async function unlike(itemId: string, session: Session | null) {
+  return deleteDataByUrl(`${base_url}/${itemId}/unlike`, session);
 }
 
 async function createComment(
@@ -73,6 +76,7 @@ export default {
   readComments,
   edit,
   remove,
+  getLikes,
   like,
   unlike,
   createComment,

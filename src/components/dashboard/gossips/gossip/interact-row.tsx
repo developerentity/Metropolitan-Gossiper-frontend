@@ -2,21 +2,22 @@
 
 import * as React from 'react';
 import { Box, Chip, Stack, TextField } from '@mui/material';
-import { useSession } from 'next-auth/react';
 import { paths } from '@/paths';
 import { PenNib, PencilLine } from '@phosphor-icons/react/dist/ssr';
 import { useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
 
 import gossips from '@/lib/requests/gossips';
 import DeleteButton from '../delete-button';
+import { LikesButton } from '../likes-button';
 
 type Props = {
     gossip: IGossip
+    session: Session | null
 }
 
-export default function InteractRow({ gossip }: Props) {
+export default function InteractRow({ gossip, session }: Props) {
 
-    const { data: session } = useSession()
     const router = useRouter();
     const isOwner = gossip.author === session?.user.id
 
@@ -59,20 +60,24 @@ export default function InteractRow({ gossip }: Props) {
                             ? content ? "Publish" : "Close"
                             : 'Comment'} />
                 </Box>
-                {isOwner &&
-                    <Stack direction={"row"} spacing={1}>
-                        <Chip
-                            onClick={handleEdit}
-                            sx={{ cursor: "pointer", px: 1 }}
-                            label='Edit'
-                            variant="outlined"
-                            color="primary"
-                            icon={<PencilLine size={16} />} />
-                        <DeleteButton
-                            onDeleteCallback={deleteGossipHandler}
-                            title='Attention'
-                            description='Are you sure you want to remove this gossip?' />
-                    </Stack >}
+                <Stack direction={"row"} spacing={1}>
+                    <LikesButton likedItemId={gossip.id} />
+                    {isOwner &&
+                        <>
+                            <Chip
+                                onClick={handleEdit}
+                                sx={{ cursor: "pointer", px: 1 }}
+                                label='Edit'
+                                variant="outlined"
+                                color="primary"
+                                icon={<PencilLine size={16} />} />
+                            <DeleteButton
+                                onDeleteCallback={deleteGossipHandler}
+                                title='Attention'
+                                description='Are you sure you want to remove this gossip?' />
+                        </>
+                    }
+                </Stack >
             </ Box>
             {isInputOpen && <Box sx={{ p: 1 }}>
                 <TextField

@@ -13,9 +13,8 @@ import { Suspense } from "react";
 
 import CommentsComponent from "@/components/dashboard/gossips/gossip/comments-component";
 import gossips from '@/lib/requests/gossips';
-import { LikesButton } from '@/components/dashboard/gossips/likes-button';
 import PaginationTrigger from '@/components/pagination-trigger';
-import InteractRow from '@/components/dashboard/gossips/gossip/interact-row';
+import InteractRowServerSide from '@/components/dashboard/gossips/gossip/intereact-row-server-side';
 
 type Params = {
     params: { gossipId: string; },
@@ -41,8 +40,8 @@ export default async function GossipPage({ params, searchParams }: Params) {
     const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
     const gossip = await gossipsData
 
-    const reqParams = { pageSize: limit, pageNumber: page }
-    const commentsData: Promise<CommentsListType> = gossips.readComments(gossipId, reqParams)
+    const commentsData: Promise<CommentsListType> =
+        gossips.readComments(gossipId, { pageSize: limit, pageNumber: page })
     const { totalItems: totalComments } = await commentsData
 
     return (
@@ -70,15 +69,11 @@ export default async function GossipPage({ params, searchParams }: Params) {
                         Created {dayjs(gossip.createdAt).format('MMM D, YYYY')}
                     </Typography>
                 </Stack>
-                <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-                    <LikesButton
-                        likes={gossip.likes || []}
-                        likedItemId={gossip.id}
-                    />
-                </Stack>
             </Stack>
             <Divider />
-            <InteractRow gossip={gossip} />
+            <Suspense fallback={<h2>Loading...</h2>}>
+                <InteractRowServerSide promise={gossipsData} />
+            </Suspense>
             <CardContent sx={{ px: 1, py: 2 }}>
                 <Suspense fallback={<h2>Loading...</h2>}>
                     <CommentsComponent promise={commentsData} />
