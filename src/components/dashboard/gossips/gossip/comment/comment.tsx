@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import gossips from "@/lib/requests/gossips";
 import ThreadInput from "./thread-input";
-import InteractRow from "./comment/interact-row";
+import InteractRow from "./interact-row";
 
 type Props = {
     comment: CommentType,
@@ -33,7 +33,10 @@ export function Comment({
     }
 
     return (
-        <div style={{ marginLeft: comment.parent ? 20 : 0, marginBottom: 20 }}>
+        <div style={{
+            marginLeft: comment.parent ? 20 : 0,
+            marginBottom: 20
+        }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <p>{comment.content}</p>
             </Box>

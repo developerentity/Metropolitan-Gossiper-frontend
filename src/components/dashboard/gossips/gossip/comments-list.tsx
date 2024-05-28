@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Paper } from "@mui/material";
 
-import { Comment } from "./comment";
+import { Comment } from "./comment/comment";
 
 type Props = {
     commentsData: CommentsListType

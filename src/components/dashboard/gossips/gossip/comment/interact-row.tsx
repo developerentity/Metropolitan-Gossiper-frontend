@@ -5,8 +5,8 @@ import { Chip, Paper, Stack } from '@mui/material';
 import { ArrowBendDoubleUpLeft } from '@phosphor-icons/react/dist/ssr';
 
 
-import DeleteButton from '../../delete-button';
-import { LikesButton } from '../../likes-button';
+import DeleteButton from '../delete-button';
+import { LikesButton } from '../likes-button';
 
 type Props = {
     comment: CommentType
