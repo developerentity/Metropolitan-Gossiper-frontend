@@ -29,7 +29,9 @@ export default function InteractRow({
                     title='Attention'
                     description='Are you sure you want to remove this comment?'
                     onDeleteCallback={handleDelete} />
-                <LikesButton likedItemId={comment.id} />
+                <LikesButton
+                    likedItemId={comment.id}
+                    itemType='Comment' />
                 {!comment.parent && !isReplyInputShown && < Chip
                     onClick={onReplyCallback}
                     sx={{ cursor: "pointer", px: 1 }}

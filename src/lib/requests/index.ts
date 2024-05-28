@@ -90,15 +90,21 @@ export const putDataByUrl = async (
   }
 };
 
-export const deleteDataByUrl = async (url: string, session: Session | null) => {
+export const deleteDataByUrl = async (
+  url: string,
+  session: Session | null,
+  params?: object
+) => {
   const token = session?.backendTokens.accessToken;
+  const reqParams = params ? { params } : {};
   try {
     const response = await axios.delete(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      ...reqParams,
     });
-    return response.status === 204;
+    return response.data || response.status === 204;
   } catch (error) {
     logger.error(error);
   }

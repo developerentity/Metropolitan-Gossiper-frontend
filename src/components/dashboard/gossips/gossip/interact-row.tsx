@@ -61,7 +61,9 @@ export default function InteractRow({ gossip, session }: Props) {
                             : 'Comment'} />
                 </Box>
                 <Stack direction={"row"} spacing={1}>
-                    <LikesButton likedItemId={gossip.id} />
+                    <LikesButton
+                        likedItemId={gossip.id}
+                        itemType='Gossip' />
                     {isOwner &&
                         <>
                             <Chip

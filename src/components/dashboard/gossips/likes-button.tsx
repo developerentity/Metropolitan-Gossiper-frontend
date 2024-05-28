@@ -9,35 +9,34 @@ import gossips from '@/lib/requests/gossips';
 
 export interface Props {
     likedItemId: string;
+    itemType: "Gossip" | "Comment"
 }
 
-export function LikesButton({ likedItemId }: Props): React.JSX.Element {
+export function LikesButton({ likedItemId, itemType }: Props): React.JSX.Element {
 
     const { data: session } = useSession()
-    const userId = session?.user.id
     const [likes, setLikes] = React.useState<string[]>([])
-    const [trigger, setTrigger] = React.useState(false)
     const [disabled, setDisabled] = React.useState(false)
+    const userId = session?.user.id
     const isLiked = userId && likes.includes(userId)
 
-    const refreshLikes = React.useCallback(async () => {
-        const res = await gossips.getLikes(likedItemId)
-        setLikes(res)
-        setDisabled(false)
+    const getLikes = React.useCallback(async () => {
+        const res = await gossips.getLikes(likedItemId, itemType)
+        res && setLikes(res)
     }, [])
 
     React.useEffect(() => {
-        refreshLikes()
-    }, [trigger])
+        getLikes()
+    }, [])
 
     const handleOnClick = async () => {
         setDisabled(true)
+        let res: string[] | null = []
         isLiked
-            ? await gossips.unlike(likedItemId, session)
-            : await gossips.like(likedItemId, session)
-        setTimeout(() => {
-            setTrigger(!trigger)
-        }, 300)
+            ? res = await gossips.unlike(likedItemId, itemType, session)
+            : res = await gossips.like(likedItemId, itemType, session)
+        res && setLikes(res)
+        setDisabled(false)
     }
 
     return (
