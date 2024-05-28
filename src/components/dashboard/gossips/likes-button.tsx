@@ -4,31 +4,44 @@ import * as React from 'react';
 import { Heart } from '@phosphor-icons/react/dist/ssr/Heart';
 import { Chip } from '@mui/material';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 import gossips from '@/lib/requests/gossips';
 
 export interface Props {
     likedItemId: string;
-    likes: string[];
+    itemType: "Gossip" | "Comment"
 }
 
-export function LikesButton({ likedItemId, likes }: Props): React.JSX.Element {
+export function LikesButton({ likedItemId, itemType }: Props): React.JSX.Element {
 
-    const router = useRouter();
     const { data: session } = useSession()
+    const [likes, setLikes] = React.useState<string[]>([])
+    const [disabled, setDisabled] = React.useState(false)
     const userId = session?.user.id
     const isLiked = userId && likes.includes(userId)
 
+    const getLikes = React.useCallback(async () => {
+        const res = await gossips.getLikes(likedItemId, itemType)
+        res && setLikes(res)
+    }, [])
+
+    React.useEffect(() => {
+        getLikes()
+    }, [])
+
     const handleOnClick = async () => {
+        setDisabled(true)
+        let res: string[] | null = []
         isLiked
-            ? await gossips.unlike(likedItemId, session)
-            : await gossips.like(likedItemId, session)
-        router.refresh()
+            ? res = await gossips.unlike(likedItemId, itemType, session)
+            : res = await gossips.like(likedItemId, itemType, session)
+        res && setLikes(res)
+        setDisabled(false)
     }
 
     return (
         <Chip
+            disabled={disabled}
             onClick={handleOnClick}
             sx={{ cursor: "pointer", px: 1 }}
             label={likes.length}

@@ -46,12 +46,35 @@ async function remove(id: string, session: Session | null) {
   return deleteDataByUrl(`${base_url}/delete/${id}`, session);
 }
 
-async function like(gossipId: string, session: Session | null) {
-  return postDataByUrl(`${likes_url}/gossip/${gossipId}/like`, {}, session);
+async function getLikes(
+  itemId: string,
+  itemType: "Gossip" | "Comment"
+): Promise<string[] | null> {
+  return getDataByUrl(`${likes_url}/${itemId}/get`, { itemType });
 }
 
-async function unlike(gossipId: string, session: Session | null) {
-  return deleteDataByUrl(`${likes_url}/gossip/${gossipId}/unlike`, session);
+async function like(
+  itemId: string,
+  itemType: "Gossip" | "Comment",
+  session: Session | null
+): Promise<string[] | null> {
+  return await postDataByUrl(
+    `${likes_url}/${itemId}/like`,
+    {},
+    session,
+    false,
+    { itemType }
+  );
+}
+
+async function unlike(
+  itemId: string,
+  itemType: "Gossip" | "Comment",
+  session: Session | null
+): Promise<string[] | null> {
+  return deleteDataByUrl(`${likes_url}/${itemId}/unlike`, session, {
+    itemType,
+  });
 }
 
 async function createComment(
@@ -73,6 +96,7 @@ export default {
   readComments,
   edit,
   remove,
+  getLikes,
   like,
   unlike,
   createComment,

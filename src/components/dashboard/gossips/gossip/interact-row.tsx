@@ -1,23 +1,23 @@
 'use client'
 
 import * as React from 'react';
-import RouterLink from 'next/link';
-import { Box, Button, TextField } from '@mui/material';
-import { useSession } from 'next-auth/react';
+import { Box, Chip, Stack, TextField } from '@mui/material';
 import { paths } from '@/paths';
 import { PenNib, PencilLine } from '@phosphor-icons/react/dist/ssr';
 import { useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
 
 import gossips from '@/lib/requests/gossips';
 import DeleteButton from '../delete-button';
+import { LikesButton } from '../likes-button';
 
 type Props = {
     gossip: IGossip
+    session: Session | null
 }
 
-export default function InteractRow({ gossip }: Props) {
+export default function InteractRow({ gossip, session }: Props) {
 
-    const { data: session } = useSession()
     const router = useRouter();
     const isOwner = gossip.author === session?.user.id
 
@@ -43,34 +43,43 @@ export default function InteractRow({ gossip }: Props) {
             : setIsInputOpen(true)
     }
 
+    const handleEdit = () =>
+        router.push(paths.dashboard.gossips.edit(gossip.id))
+
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 1 }}>
                 <Box>
-                    <Button
+                    <Chip
                         onClick={openCommentInputHandler}
-                        variant="contained"
-                        startIcon={<PenNib size={24} />}>
-                        {isInputOpen
+                        sx={{ cursor: "pointer", px: 1 }}
+                        variant="outlined"
+                        color="primary"
+                        icon={<PenNib size={16} />}
+                        label={isInputOpen
                             ? content ? "Publish" : "Close"
-                            : 'Comment'}
-                    </Button>
+                            : 'Comment'} />
                 </Box>
-                {isOwner &&
-                    <Box display={'flex'}>
-                        <Button
-                            component={RouterLink}
-                            href={paths.dashboard.gossips.edit(gossip.id)}
-                            startIcon={<PencilLine size={24} />}
-                            variant="contained">
-                            Edit
-                        </Button>
-                        <DeleteButton
-                            onDeleteCallback={deleteGossipHandler}
-                            title='Attention'
-                            description='You are sure you want to delete this gossip ' />
-                    </Box >
-                }
+                <Stack direction={"row"} spacing={1}>
+                    <LikesButton
+                        likedItemId={gossip.id}
+                        itemType='Gossip' />
+                    {isOwner &&
+                        <>
+                            <Chip
+                                onClick={handleEdit}
+                                sx={{ cursor: "pointer", px: 1 }}
+                                label='Edit'
+                                variant="outlined"
+                                color="primary"
+                                icon={<PencilLine size={16} />} />
+                            <DeleteButton
+                                onDeleteCallback={deleteGossipHandler}
+                                title='Attention'
+                                description='Are you sure you want to remove this gossip?' />
+                        </>
+                    }
+                </Stack >
             </ Box>
             {isInputOpen && <Box sx={{ p: 1 }}>
                 <TextField
@@ -85,6 +94,6 @@ export default function InteractRow({ gossip }: Props) {
                     sx={{ '& .MuiOutlinedInput-root': { resize: 'none', }, }}
                 />
             </Box>}
-        </Box>
+        </Box >
     );
 }

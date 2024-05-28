@@ -1,8 +1,7 @@
 'use client'
 
-import { Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { ArrowBendDoubleUpLeft, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/navigation";
 
 import gossips from "@/lib/requests/gossips";
@@ -27,7 +26,6 @@ export function Comment({
 
     const router = useRouter();
     const { data: session } = useSession()
-    const isOwner = session?.user.id === comment.author
 
     const handleDelete = async () => {
         await gossips.deleteComment(comment.id, session)
@@ -38,30 +36,6 @@ export function Comment({
         <div style={{ marginLeft: comment.parent ? 20 : 0, marginBottom: 20 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <p>{comment.content}</p>
-                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                    {isOwner && <IconButton
-                        onClick={handleDelete}
-                        aria-label="delete"
-                        sx={{
-                            height: 'auto',
-                            alignSelf: 'flex-start',
-                        }}
-                    >
-                        <Trash size={24} />
-                    </IconButton>}
-                    {!comment.parent &&
-                        <IconButton
-                            onClick={() => onReplyClick(comment.id)}
-                            aria-label="reply"
-                            sx={{
-                                ml: 1,
-                                height: 'auto',
-                                alignSelf: 'flex-start',
-                            }}
-                        >
-                            <ArrowBendDoubleUpLeft size={24} />
-                        </IconButton>}
-                </Box>
             </Box>
             <InteractRow
                 comment={comment}
