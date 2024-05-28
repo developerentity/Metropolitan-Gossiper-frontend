@@ -7,7 +7,7 @@ type Props = {
     promise: Promise<IGossip>
 }
 
-export default async function InteractRowSSR({ promise }: Props) {
+export default async function InteractRowServerSide({ promise }: Props) {
 
     const session = await getServerSession(authOptions)
     const gossip = await promise

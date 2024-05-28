@@ -11,7 +11,7 @@ import { CardMedia } from '@mui/material';
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import CommentsComponent from "@/components/dashboard/gossips/gossip/comments-component";
+import CommentServerSide from "@/components/dashboard/gossips/gossip/comment/comment-server-side";
 import gossips from '@/lib/requests/gossips';
 import PaginationTrigger from '@/components/pagination-trigger';
 import InteractRowServerSide from '@/components/dashboard/gossips/gossip/intereact-row-server-side';
@@ -76,7 +76,7 @@ export default async function GossipPage({ params, searchParams }: Params) {
             </Suspense>
             <CardContent sx={{ px: 1, py: 2 }}>
                 <Suspense fallback={<h2>Loading...</h2>}>
-                    <CommentsComponent promise={commentsData} />
+                    <CommentServerSide promise={commentsData} />
                 </Suspense>
             </CardContent>
             <PaginationTrigger

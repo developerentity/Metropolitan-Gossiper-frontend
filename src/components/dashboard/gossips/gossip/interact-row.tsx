@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 import { Session } from 'next-auth';
 
 import gossips from '@/lib/requests/gossips';
-import DeleteButton from '../delete-button';
-import { LikesButton } from '../likes-button';
+import DeleteButton from './delete-button';
+import { LikesButton } from './likes-button';
 
 type Props = {
     gossip: IGossip

@@ -1,10 +1,10 @@
-import CommentsList from "./comments-list";
+import CommentsList from "../comments-list";
 
 type Props = {
   promise: Promise<CommentsListType>
 }
 
-export default async function CommentsComponent({ promise }: Props) {
+export default async function CommentServerSide({ promise }: Props) {
 
   const commentsData = await promise
 
