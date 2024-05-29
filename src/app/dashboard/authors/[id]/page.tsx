@@ -19,12 +19,12 @@ export default async function AuthorPage({ params }: Props) {
         }
     })
 
-    const data = await response.json()
+    const user = await response.json()
 
     return (
         <div>
             USER PAGE
-            {data.user.email}
+            {user.email}
         </ div>
     )
 }

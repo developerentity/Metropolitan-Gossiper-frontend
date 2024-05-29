@@ -5,11 +5,5 @@ type CommentType = {
   gossip: string;
   parent: string | null;
   likes: string[];
-};
-
-type CommentsListType = {
-  totalItems: number;
-  totalPages: number;
-  currentPage: number;
-  items: CommentType[];
+  createdAt: Date;
 };

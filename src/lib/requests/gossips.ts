@@ -4,6 +4,7 @@ import {
   postDataByUrl,
   updateDataByUrl,
 } from "@/lib/requests";
+import { ItemsListViewModel } from "@/types/response";
 import type { Session } from "next-auth";
 
 const base_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/gossips`;
@@ -34,7 +35,7 @@ async function readComments(
     pageSize?: number;
     pageNumber?: number;
   }
-): Promise<CommentsListType> {
+): Promise<ItemsListViewModel<CommentType>> {
   return getDataByUrl(`${base_url}/get/${gossipId}/comments`, params);
 }
 

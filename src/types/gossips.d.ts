@@ -6,5 +6,6 @@ type IGossip = {
   comments: string[];
   likes: string[];
   imageUrl?: string;
-  createdAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

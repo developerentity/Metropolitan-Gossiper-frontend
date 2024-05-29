@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Paper } from "@mui/material";
 
 import { Comment } from "./comment/comment";
+import { ItemsListViewModel } from "@/types/response";
 
 type Props = {
-    commentsData: CommentsListType
+    commentsData: ItemsListViewModel<CommentType>
 }
 
 export default function CommentsList({ commentsData }: Props) {

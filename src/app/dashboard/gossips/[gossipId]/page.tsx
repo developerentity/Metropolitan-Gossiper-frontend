@@ -15,6 +15,7 @@ import CommentServerSide from "@/components/dashboard/gossips/gossip/comment/com
 import gossips from '@/lib/requests/gossips';
 import PaginationTrigger from '@/components/pagination-trigger';
 import InteractRowServerSide from '@/components/dashboard/gossips/gossip/intereact-row-server-side';
+import { ItemsListViewModel } from '@/types/response';
 
 type Params = {
     params: { gossipId: string; },
@@ -40,7 +41,7 @@ export default async function GossipPage({ params, searchParams }: Params) {
     const gossipsData: Promise<IGossip> = gossips.readOne(gossipId)
     const gossip = await gossipsData
 
-    const commentsData: Promise<CommentsListType> =
+    const commentsData: Promise<ItemsListViewModel<CommentType>> =
         gossips.readComments(gossipId, { pageSize: limit, pageNumber: page })
     const { totalItems: totalComments } = await commentsData
 
