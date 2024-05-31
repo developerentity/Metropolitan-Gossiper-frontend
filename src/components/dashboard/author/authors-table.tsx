@@ -87,7 +87,7 @@ export function AuthorsTable({
                   </TableCell>
                   <TableCell>
                     <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                      <Avatar src={row.avatar} />
+                      <Avatar src={row.avatarUrl} />
                       <Typography variant="subtitle2">
                         {row.firstName + " " + row.lastName}
                       </Typography>

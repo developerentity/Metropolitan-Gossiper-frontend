@@ -3,9 +3,10 @@
  */
 type AuthorType = {
   id: string;
+  role: string;
   firstName: string;
   lastName: string;
-  avatar: string;
+  avatarUrl: string | undefined;
   email: string;
   about: string;
   gossips: string[];
