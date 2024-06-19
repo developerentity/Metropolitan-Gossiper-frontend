@@ -19,6 +19,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
+import auth from '@/lib/requests/auth';
+import { logger } from '@/lib/default-logger';
+import { signIn } from 'next-auth/react';
 
 const schema = zod.object({
   firstName: zod.string().min(1, { message: 'First name is required' }),
@@ -48,6 +51,20 @@ export function SignUpForm(): React.JSX.Element {
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
+      const res = await auth.signUp(values)
+      if (res.registeredUser) {
+        await signIn('credentials', {
+          redirect: false,
+          email: values.email,
+          password: values.password
+        })
+        setIsPending(false);
+        router.push('/')
+      } else {
+        setIsPending(false);
+        logger.error("Registration error")
+      }
+
       // const { error } = await authClient.signUp(values);
 
       // if (error) {
@@ -61,7 +78,7 @@ export function SignUpForm(): React.JSX.Element {
 
       // UserProvider, for this case, will not refresh the router
       // After refresh, GuestGuard will handle the redirect
-      router.refresh();
+      // router.refresh();
     },
     [router, setError]
   );
