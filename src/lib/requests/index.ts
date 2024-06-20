@@ -37,6 +37,7 @@ export const postDataByUrl = async (
     return response.data;
   } catch (error) {
     logger.error(error);
+    return error;
   }
 };
 

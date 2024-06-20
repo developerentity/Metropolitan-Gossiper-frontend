@@ -20,7 +20,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import auth from '@/lib/requests/auth';
-import { logger } from '@/lib/default-logger';
 import { signIn } from 'next-auth/react';
 
 const schema = zod.object({
@@ -52,33 +51,24 @@ export function SignUpForm(): React.JSX.Element {
       setIsPending(true);
 
       const res = await auth.signUp(values)
-      if (res.registeredUser) {
-        await signIn('credentials', {
-          redirect: false,
-          email: values.email,
-          password: values.password
-        })
+      const errors = res?.response?.data?.errors
+
+      if (errors) {
+        errors.forEach((error:
+          { path: "firstName" | "lastName" | "email" | "password" | "terms" | "root", msg: string }) => {
+          setError(error.path, { type: 'server', message: error.msg })
+        });
         setIsPending(false);
-        router.push('/')
-      } else {
-        setIsPending(false);
-        logger.error("Registration error")
+        return
       }
 
-      // const { error } = await authClient.signUp(values);
-
-      // if (error) {
-      //   setError('root', { type: 'server', message: error });
-      //   setIsPending(false);
-      //   return;
-      // }
-
-      // Refresh the auth state
-      // await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      // router.refresh();
+      await signIn('credentials', {
+        redirect: false,
+        email: values.email,
+        password: values.password
+      })
+      setIsPending(false);
+      router.push('/')
     },
     [router, setError]
   );
@@ -111,10 +101,10 @@ export function SignUpForm(): React.JSX.Element {
             control={control}
             name="lastName"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.firstName)}>
+              <FormControl error={Boolean(errors.lastName)}>
                 <InputLabel>Last name</InputLabel>
                 <OutlinedInput {...field} label="Last name" />
-                {errors.firstName ? <FormHelperText>{errors.firstName.message}</FormHelperText> : null}
+                {errors.lastName ? <FormHelperText>{errors.lastName.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -163,7 +153,7 @@ export function SignUpForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-      <Alert color="warning">Created users are not persisted</Alert>
+      {/* <Alert color="warning">Created users are not persisted</Alert> */}
     </Stack>
   );
 }
