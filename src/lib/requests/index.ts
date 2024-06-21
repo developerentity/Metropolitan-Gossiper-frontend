@@ -36,8 +36,7 @@ export const postDataByUrl = async (
     });
     return response.data;
   } catch (error) {
-    logger.error(error);
-    return error;
+    return { errors: _handleAxiosError(error) };
   }
 };
 
@@ -108,5 +107,18 @@ export const deleteDataByUrl = async (
     return response.data || response.status === 204;
   } catch (error) {
     logger.error(error);
+  }
+};
+
+const _handleAxiosError = (error: unknown) => {
+  logger.error(error);
+  if (axios.isAxiosError(error)) {
+    if (error.response && error.response.status === 400) {
+      return error.response.data.errors;
+    } else {
+      return error.message;
+    }
+  } else {
+    return "An unexpected error occurred";
   }
 };

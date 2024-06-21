@@ -47,10 +47,16 @@ export function SignInForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      await signIn('credentials', { email: values.email, password: values.password })
-      router.refresh();
+      const res = await signIn('credentials', {
+        redirect: false,
+        email: values.email,
+        password: values.password
+      })
 
-      // how to be with errors?? need fix
+      if (res?.error) return setError('root', {
+        type: 'server',
+        message: "Unauthorized"
+      });
     }, [router, setError]
   );
 
@@ -123,16 +129,6 @@ export function SignInForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-      <Alert color="warning">
-        Use{' '}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          sofia@devias.io
-        </Typography>{' '}
-        with password{' '}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          Secret1
-        </Typography>
-      </Alert>
     </Stack>
   );
 }

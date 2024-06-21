@@ -50,16 +50,19 @@ export function SignUpForm(): React.JSX.Element {
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
-      const res = await auth.signUp(values)
-      const errors = res?.response?.data?.errors
+      const { errors } = await auth.signUp(values)
 
-      if (errors) {
-        errors.forEach((error:
+      if (Array.isArray(errors)) {
+        setIsPending(false);
+        return errors.forEach((error:
           { path: "firstName" | "lastName" | "email" | "password" | "terms" | "root", msg: string }) => {
           setError(error.path, { type: 'server', message: error.msg })
         });
+      }
+
+      if (typeof errors === 'string') {
         setIsPending(false);
-        return
+        return setError('root', { type: 'server', message: errors })
       }
 
       await signIn('credentials', {
