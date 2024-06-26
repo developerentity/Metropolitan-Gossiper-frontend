@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import UploadImageComponent from './upload-image-component';
 
 const user = {
   name: 'Sofia Rivers',
@@ -38,9 +38,7 @@ export function AccountInfo(): React.JSX.Element {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button fullWidth variant="text">
-          Upload picture
-        </Button>
+        <UploadImageComponent text='Upload picture' variant='text' fullWidth />
       </CardActions>
     </Card>
   );
