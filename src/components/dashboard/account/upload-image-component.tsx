@@ -12,9 +12,10 @@ type PropsType = {
   color?: "error" | "inherit" | "primary" | "secondary" | "success" | "info" | "warning",
   variant?: "text" | "contained" | "outlined",
   fullWidth?: boolean,
+  setSavedImage: (file: File) => void
 }
 
-const UploadImageComponent = ({ text, color = 'primary', variant = 'contained', fullWidth = false }: PropsType) => {
+const UploadImageComponent = ({ text, color = 'primary', variant = 'contained', fullWidth = false, setSavedImage }: PropsType) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const triggerFileSelectPopup = () => inputRef.current?.click();
@@ -38,10 +39,13 @@ const UploadImageComponent = ({ text, color = 'primary', variant = 'contained', 
     }
   };
 
-  const onDownload = () => {
+  const onDownload = async () => {
     if (image && croppedArea) {
-      generateDownload(image, croppedArea);
-      setImage(null)
+      const file = await generateDownload(image, croppedArea);
+      if (file) {
+        setSavedImage(file)
+        setImage(null)
+      }
     }
   };
 

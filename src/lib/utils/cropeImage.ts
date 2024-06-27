@@ -72,27 +72,25 @@ export default async function getCroppedImg(
 export const generateDownload = async (
   imageSrc: string,
   crop: PixelCrop | null
-): Promise<void> => {
+): Promise<File | null> => {
   if (!crop || !imageSrc) {
-    return;
+    return null;
   }
 
   const canvas = await getCroppedImg(imageSrc, crop);
 
-  canvas.toBlob(
-    (blob) => {
-      if (blob) {
-        const previewUrl = window.URL.createObjectURL(blob);
-
-        const anchor = document.createElement("a");
-        anchor.download = "image.jpeg";
-        anchor.href = previewUrl;
-        anchor.click();
-
-        window.URL.revokeObjectURL(previewUrl);
-      }
-    },
-    "image/jpeg",
-    0.66
-  );
+  return new Promise((resolve) => {
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+          resolve(file);
+        } else {
+          resolve(null);
+        }
+      },
+      "image/jpeg",
+      0.66
+    );
+  });
 };
